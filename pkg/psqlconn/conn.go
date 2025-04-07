@@ -15,7 +15,7 @@ const (
 )
 
 type connector struct {
-	db  *sqlx.DB
+	*sqlx.DB
 	cfg Config
 }
 
@@ -37,12 +37,12 @@ func getConnString(cfg Config) string {
 }
 
 func (c *connector) Start(ctx context.Context) (err error) {
-	c.db, err = sqlx.Connect(driverName, getConnString(c.cfg))
+	c.DB, err = sqlx.Connect(driverName, getConnString(c.cfg))
 	if err != nil {
 		return err
 	}
 
-	err = c.db.Ping()
+	err = c.DB.Ping()
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (c *connector) Start(ctx context.Context) (err error) {
 }
 
 func (c *connector) Stop(ctx context.Context) error {
-	return c.db.Close()
+	return c.DB.Close()
 }
 
 func (c *connector) GetName() string {

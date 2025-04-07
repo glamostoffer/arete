@@ -9,8 +9,8 @@ import (
 )
 
 type connector struct {
-	client *redis.Client
-	cfg    Config
+	*redis.Client
+	cfg Config
 }
 
 const (
@@ -24,13 +24,13 @@ func New(cfg Config) component.Component {
 }
 
 func (c *connector) Start(ctx context.Context) error {
-	c.client = redis.NewClient(&redis.Options{
+	c.Client = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", c.cfg.Host, c.cfg.Port),
 		Password: c.cfg.Password,
 		DB:       c.cfg.DB,
 	})
 
-	_, err := c.client.Ping(ctx).Result()
+	_, err := c.Ping(ctx).Result()
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (c *connector) Start(ctx context.Context) error {
 }
 
 func (c *connector) Stop(ctx context.Context) error {
-	return c.client.Close()
+	return c.Close()
 }
 
 func (c *connector) GetName() string {
