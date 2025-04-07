@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/glamostoffer/arete/pkg/component"
 	"github.com/redis/go-redis/v9"
 )
 
-type connector struct {
+type Connector struct {
 	*redis.Client
 	cfg Config
 }
@@ -17,13 +16,13 @@ const (
 	componentName = "redis"
 )
 
-func New(cfg Config) component.Component {
-	return &connector{
+func New(cfg Config) Connector {
+	return Connector{
 		cfg: cfg,
 	}
 }
 
-func (c *connector) Start(ctx context.Context) error {
+func (c *Connector) Start(ctx context.Context) error {
 	c.Client = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", c.cfg.Host, c.cfg.Port),
 		Password: c.cfg.Password,
@@ -38,10 +37,10 @@ func (c *connector) Start(ctx context.Context) error {
 	return nil
 }
 
-func (c *connector) Stop(ctx context.Context) error {
+func (c *Connector) Stop(_ context.Context) error {
 	return c.Close()
 }
 
-func (c *connector) GetName() string {
+func (c *Connector) GetName() string {
 	return componentName
 }

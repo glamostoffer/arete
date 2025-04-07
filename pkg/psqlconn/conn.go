@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/glamostoffer/arete/pkg/component"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -14,13 +13,13 @@ const (
 	componentName = "psqlconn"
 )
 
-type connector struct {
+type Connector struct {
 	*sqlx.DB
 	cfg Config
 }
 
-func New(cfg Config) component.Component {
-	return &connector{
+func New(cfg Config) Connector {
+	return Connector{
 		cfg: cfg,
 	}
 }
@@ -36,7 +35,7 @@ func getConnString(cfg Config) string {
 	)
 }
 
-func (c *connector) Start(ctx context.Context) (err error) {
+func (c *Connector) Start(_ context.Context) (err error) {
 	c.DB, err = sqlx.Connect(driverName, getConnString(c.cfg))
 	if err != nil {
 		return err
@@ -50,10 +49,10 @@ func (c *connector) Start(ctx context.Context) (err error) {
 	return nil
 }
 
-func (c *connector) Stop(ctx context.Context) error {
+func (c *Connector) Stop(_ context.Context) error {
 	return c.DB.Close()
 }
 
-func (c *connector) GetName() string {
+func (c *Connector) GetName() string {
 	return componentName
 }
