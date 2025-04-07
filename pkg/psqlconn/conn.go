@@ -6,40 +6,35 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type Connector struct {
-	cfg Config
-	db  *sqlx.DB
-}
-
 const (
 	driverName = "pgx"
 )
 
-func (c *Connector) getConnString() string {
+func getConnString(cfg Config) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		c.cfg.Host,
-		c.cfg.Port,
-		c.cfg.User,
-		c.cfg.Password,
-		c.cfg.DBName,
-		c.cfg.SSLMode,
+		cfg.Host,
+		cfg.Port,
+		cfg.User,
+		cfg.Password,
+		cfg.DBName,
+		cfg.SSLMode,
 	)
 }
 
-func (c *Connector) CreateConnection() (db *sqlx.DB, err error) {
-	c.db, err = sqlx.Connect(driverName, c.getConnString())
+func CreateConnection(cfg Config) (db *sqlx.DB, err error) {
+	db, err = sqlx.Connect(driverName, getConnString(cfg))
 	if err != nil {
 		return nil, err
 	}
 
-	err = c.db.Ping()
+	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
 
-	return c.db, nil
+	return db, nil
 }
 
-func (c *Connector) Stop() error {
-	return c.db.Close()
+func Stop(db *sqlx.DB) error {
+	return db.Close()
 }
