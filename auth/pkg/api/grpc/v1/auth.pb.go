@@ -22,16 +22,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type SendEmailRequest struct {
+type StartSignUpRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Login                string `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"`
+	Email                string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Password             string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	PasswordConfirmation string `protobuf:"bytes,4,opt,name=passwordConfirmation,proto3" json:"passwordConfirmation,omitempty"`
 }
 
-func (x *SendEmailRequest) Reset() {
-	*x = SendEmailRequest{}
+func (x *StartSignUpRequest) Reset() {
+	*x = StartSignUpRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_grpc_v1_auth_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -39,13 +42,13 @@ func (x *SendEmailRequest) Reset() {
 	}
 }
 
-func (x *SendEmailRequest) String() string {
+func (x *StartSignUpRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendEmailRequest) ProtoMessage() {}
+func (*StartSignUpRequest) ProtoMessage() {}
 
-func (x *SendEmailRequest) ProtoReflect() protoreflect.Message {
+func (x *StartSignUpRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_api_grpc_v1_auth_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -57,26 +60,50 @@ func (x *SendEmailRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendEmailRequest.ProtoReflect.Descriptor instead.
-func (*SendEmailRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use StartSignUpRequest.ProtoReflect.Descriptor instead.
+func (*StartSignUpRequest) Descriptor() ([]byte, []int) {
 	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SendEmailRequest) GetAddress() string {
+func (x *StartSignUpRequest) GetLogin() string {
 	if x != nil {
-		return x.Address
+		return x.Login
 	}
 	return ""
 }
 
-type SendEmailResponse struct {
+func (x *StartSignUpRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *StartSignUpRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *StartSignUpRequest) GetPasswordConfirmation() string {
+	if x != nil {
+		return x.PasswordConfirmation
+	}
+	return ""
+}
+
+type StartSignUpResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	SessionID      string `protobuf:"bytes,1,opt,name=sessionID,proto3" json:"sessionID,omitempty"`
+	ResendCooldown int64  `protobuf:"varint,2,opt,name=resendCooldown,proto3" json:"resendCooldown,omitempty"`
 }
 
-func (x *SendEmailResponse) Reset() {
-	*x = SendEmailResponse{}
+func (x *StartSignUpResponse) Reset() {
+	*x = StartSignUpResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_grpc_v1_auth_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -84,13 +111,13 @@ func (x *SendEmailResponse) Reset() {
 	}
 }
 
-func (x *SendEmailResponse) String() string {
+func (x *StartSignUpResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SendEmailResponse) ProtoMessage() {}
+func (*StartSignUpResponse) ProtoMessage() {}
 
-func (x *SendEmailResponse) ProtoReflect() protoreflect.Message {
+func (x *StartSignUpResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_api_grpc_v1_auth_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -102,9 +129,588 @@ func (x *SendEmailResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SendEmailResponse.ProtoReflect.Descriptor instead.
-func (*SendEmailResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use StartSignUpResponse.ProtoReflect.Descriptor instead.
+func (*StartSignUpResponse) Descriptor() ([]byte, []int) {
 	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *StartSignUpResponse) GetSessionID() string {
+	if x != nil {
+		return x.SessionID
+	}
+	return ""
+}
+
+func (x *StartSignUpResponse) GetResendCooldown() int64 {
+	if x != nil {
+		return x.ResendCooldown
+	}
+	return 0
+}
+
+type ConfirmEmailRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ConfirmationCode string `protobuf:"bytes,1,opt,name=confirmationCode,proto3" json:"confirmationCode,omitempty"`
+	SessionID        string `protobuf:"bytes,2,opt,name=sessionID,proto3" json:"sessionID,omitempty"`
+	Ip               string `protobuf:"bytes,3,opt,name=ip,proto3" json:"ip,omitempty"`
+	UserAgent        string `protobuf:"bytes,4,opt,name=userAgent,proto3" json:"userAgent,omitempty"`
+}
+
+func (x *ConfirmEmailRequest) Reset() {
+	*x = ConfirmEmailRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConfirmEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmEmailRequest) ProtoMessage() {}
+
+func (x *ConfirmEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmEmailRequest.ProtoReflect.Descriptor instead.
+func (*ConfirmEmailRequest) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ConfirmEmailRequest) GetConfirmationCode() string {
+	if x != nil {
+		return x.ConfirmationCode
+	}
+	return ""
+}
+
+func (x *ConfirmEmailRequest) GetSessionID() string {
+	if x != nil {
+		return x.SessionID
+	}
+	return ""
+}
+
+func (x *ConfirmEmailRequest) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *ConfirmEmailRequest) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+type ConfirmEmailResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AccessToken  string `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	RefreshToken string `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
+}
+
+func (x *ConfirmEmailResponse) Reset() {
+	*x = ConfirmEmailResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConfirmEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmEmailResponse) ProtoMessage() {}
+
+func (x *ConfirmEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmEmailResponse.ProtoReflect.Descriptor instead.
+func (*ConfirmEmailResponse) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ConfirmEmailResponse) GetAccessToken() string {
+	if x != nil {
+		return x.AccessToken
+	}
+	return ""
+}
+
+func (x *ConfirmEmailResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+type SignInRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Login     string `protobuf:"bytes,1,opt,name=login,proto3" json:"login,omitempty"` // login or email
+	Password  string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Ip        string `protobuf:"bytes,3,opt,name=ip,proto3" json:"ip,omitempty"`
+	UserAgent string `protobuf:"bytes,4,opt,name=userAgent,proto3" json:"userAgent,omitempty"`
+}
+
+func (x *SignInRequest) Reset() {
+	*x = SignInRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SignInRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignInRequest) ProtoMessage() {}
+
+func (x *SignInRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignInRequest.ProtoReflect.Descriptor instead.
+func (*SignInRequest) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SignInRequest) GetLogin() string {
+	if x != nil {
+		return x.Login
+	}
+	return ""
+}
+
+func (x *SignInRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *SignInRequest) GetIp() string {
+	if x != nil {
+		return x.Ip
+	}
+	return ""
+}
+
+func (x *SignInRequest) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+type SignInResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AccessToken   string `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	RefreashToken string `protobuf:"bytes,2,opt,name=refreashToken,proto3" json:"refreashToken,omitempty"`
+}
+
+func (x *SignInResponse) Reset() {
+	*x = SignInResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SignInResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SignInResponse) ProtoMessage() {}
+
+func (x *SignInResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SignInResponse.ProtoReflect.Descriptor instead.
+func (*SignInResponse) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SignInResponse) GetAccessToken() string {
+	if x != nil {
+		return x.AccessToken
+	}
+	return ""
+}
+
+func (x *SignInResponse) GetRefreashToken() string {
+	if x != nil {
+		return x.RefreashToken
+	}
+	return ""
+}
+
+type InitiatePasswordChangeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+}
+
+func (x *InitiatePasswordChangeRequest) Reset() {
+	*x = InitiatePasswordChangeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *InitiatePasswordChangeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitiatePasswordChangeRequest) ProtoMessage() {}
+
+func (x *InitiatePasswordChangeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitiatePasswordChangeRequest.ProtoReflect.Descriptor instead.
+func (*InitiatePasswordChangeRequest) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *InitiatePasswordChangeRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type InitiatePasswordChangeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	SessionID      string `protobuf:"bytes,1,opt,name=sessionID,proto3" json:"sessionID,omitempty"`
+	ResendCooldown int64  `protobuf:"varint,2,opt,name=resendCooldown,proto3" json:"resendCooldown,omitempty"`
+}
+
+func (x *InitiatePasswordChangeResponse) Reset() {
+	*x = InitiatePasswordChangeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *InitiatePasswordChangeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InitiatePasswordChangeResponse) ProtoMessage() {}
+
+func (x *InitiatePasswordChangeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InitiatePasswordChangeResponse.ProtoReflect.Descriptor instead.
+func (*InitiatePasswordChangeResponse) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *InitiatePasswordChangeResponse) GetSessionID() string {
+	if x != nil {
+		return x.SessionID
+	}
+	return ""
+}
+
+func (x *InitiatePasswordChangeResponse) GetResendCooldown() int64 {
+	if x != nil {
+		return x.ResendCooldown
+	}
+	return 0
+}
+
+type ConfirmPasswordChangeRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NewPassword             string `protobuf:"bytes,1,opt,name=newPassword,proto3" json:"newPassword,omitempty"`
+	NewPasswordConfirmation string `protobuf:"bytes,2,opt,name=newPasswordConfirmation,proto3" json:"newPasswordConfirmation,omitempty"`
+	SessionID               string `protobuf:"bytes,3,opt,name=sessionID,proto3" json:"sessionID,omitempty"`
+	ConfirmationCode        string `protobuf:"bytes,4,opt,name=confirmationCode,proto3" json:"confirmationCode,omitempty"`
+}
+
+func (x *ConfirmPasswordChangeRequest) Reset() {
+	*x = ConfirmPasswordChangeRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConfirmPasswordChangeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmPasswordChangeRequest) ProtoMessage() {}
+
+func (x *ConfirmPasswordChangeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmPasswordChangeRequest.ProtoReflect.Descriptor instead.
+func (*ConfirmPasswordChangeRequest) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ConfirmPasswordChangeRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+func (x *ConfirmPasswordChangeRequest) GetNewPasswordConfirmation() string {
+	if x != nil {
+		return x.NewPasswordConfirmation
+	}
+	return ""
+}
+
+func (x *ConfirmPasswordChangeRequest) GetSessionID() string {
+	if x != nil {
+		return x.SessionID
+	}
+	return ""
+}
+
+func (x *ConfirmPasswordChangeRequest) GetConfirmationCode() string {
+	if x != nil {
+		return x.ConfirmationCode
+	}
+	return ""
+}
+
+type ConfirmPasswordChangeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ConfirmPasswordChangeResponse) Reset() {
+	*x = ConfirmPasswordChangeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConfirmPasswordChangeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmPasswordChangeResponse) ProtoMessage() {}
+
+func (x *ConfirmPasswordChangeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmPasswordChangeResponse.ProtoReflect.Descriptor instead.
+func (*ConfirmPasswordChangeResponse) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{9}
+}
+
+type ResendEmailRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Email     string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	SessionID string `protobuf:"bytes,2,opt,name=sessionID,proto3" json:"sessionID,omitempty"`
+}
+
+func (x *ResendEmailRequest) Reset() {
+	*x = ResendEmailRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ResendEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResendEmailRequest) ProtoMessage() {}
+
+func (x *ResendEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResendEmailRequest.ProtoReflect.Descriptor instead.
+func (*ResendEmailRequest) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ResendEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *ResendEmailRequest) GetSessionID() string {
+	if x != nil {
+		return x.SessionID
+	}
+	return ""
+}
+
+type ResendEmailResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ResendCooldown int64 `protobuf:"varint,1,opt,name=resendCooldown,proto3" json:"resendCooldown,omitempty"` // время, через которое можно отправить письмо ещё раз
+}
+
+func (x *ResendEmailResponse) Reset() {
+	*x = ResendEmailResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_grpc_v1_auth_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ResendEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResendEmailResponse) ProtoMessage() {}
+
+func (x *ResendEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_grpc_v1_auth_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResendEmailResponse.ProtoReflect.Descriptor instead.
+func (*ResendEmailResponse) Descriptor() ([]byte, []int) {
+	return file_api_grpc_v1_auth_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ResendEmailResponse) GetResendCooldown() int64 {
+	if x != nil {
+		return x.ResendCooldown
+	}
+	return 0
 }
 
 var File_api_grpc_v1_auth_proto protoreflect.FileDescriptor
@@ -112,17 +718,115 @@ var File_api_grpc_v1_auth_proto protoreflect.FileDescriptor
 var file_api_grpc_v1_auth_proto_rawDesc = []byte{
 	0x0a, 0x16, 0x61, 0x70, 0x69, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x75,
 	0x74, 0x68, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x07, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76,
-	0x31, 0x22, 0x2c, 0x0a, 0x10, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22,
-	0x13, 0x0a, 0x11, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x32, 0x4a, 0x0a, 0x04, 0x61, 0x75, 0x74, 0x68, 0x12, 0x42, 0x0a, 0x09,
-	0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x19, 0x2e, 0x61, 0x75, 0x74, 0x68,
-	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53,
-	0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x42, 0x10, 0x5a, 0x0e, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x3b,
-	0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x31, 0x22, 0x90, 0x01, 0x0a, 0x12, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x55,
+	0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x67, 0x69,
+	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x14,
+	0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65,
+	0x6d, 0x61, 0x69, 0x6c, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64,
+	0x12, 0x32, 0x0a, 0x14, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x14,
+	0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x22, 0x5b, 0x0a, 0x13, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x69, 0x67,
+	0x6e, 0x55, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x73,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x12, 0x26, 0x0a, 0x0e, 0x72, 0x65, 0x73,
+	0x65, 0x6e, 0x64, 0x43, 0x6f, 0x6f, 0x6c, 0x64, 0x6f, 0x77, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x0e, 0x72, 0x65, 0x73, 0x65, 0x6e, 0x64, 0x43, 0x6f, 0x6f, 0x6c, 0x64, 0x6f, 0x77,
+	0x6e, 0x22, 0x8d, 0x01, 0x0a, 0x13, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x45, 0x6d, 0x61,
+	0x69, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x0a, 0x10, 0x63, 0x6f, 0x6e,
+	0x66, 0x69, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x10, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x49, 0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x49, 0x44, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x75, 0x73, 0x65, 0x72, 0x41, 0x67, 0x65, 0x6e, 0x74,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x75, 0x73, 0x65, 0x72, 0x41, 0x67, 0x65, 0x6e,
+	0x74, 0x22, 0x5c, 0x0a, 0x14, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x45, 0x6d, 0x61, 0x69,
+	0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x63, 0x63,
+	0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b,
+	0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x22, 0x0a, 0x0c, 0x72,
+	0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0c, 0x72, 0x65, 0x66, 0x72, 0x65, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22,
+	0x6f, 0x0a, 0x0d, 0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x14, 0x0a, 0x05, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x6c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f,
+	0x72, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f,
+	0x72, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x70, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
+	0x69, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x75, 0x73, 0x65, 0x72, 0x41, 0x67, 0x65, 0x6e, 0x74, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x75, 0x73, 0x65, 0x72, 0x41, 0x67, 0x65, 0x6e, 0x74,
+	0x22, 0x58, 0x0a, 0x0e, 0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x20, 0x0a, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54, 0x6f, 0x6b, 0x65,
+	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x54,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x24, 0x0a, 0x0d, 0x72, 0x65, 0x66, 0x72, 0x65, 0x61, 0x73, 0x68,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x72, 0x65, 0x66,
+	0x72, 0x65, 0x61, 0x73, 0x68, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x35, 0x0a, 0x1d, 0x49, 0x6e,
+	0x69, 0x74, 0x69, 0x61, 0x74, 0x65, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68,
+	0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65,
+	0x6d, 0x61, 0x69, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69,
+	0x6c, 0x22, 0x66, 0x0a, 0x1e, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x74, 0x65, 0x50, 0x61, 0x73,
+	0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x44,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49,
+	0x44, 0x12, 0x26, 0x0a, 0x0e, 0x72, 0x65, 0x73, 0x65, 0x6e, 0x64, 0x43, 0x6f, 0x6f, 0x6c, 0x64,
+	0x6f, 0x77, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x72, 0x65, 0x73, 0x65, 0x6e,
+	0x64, 0x43, 0x6f, 0x6f, 0x6c, 0x64, 0x6f, 0x77, 0x6e, 0x22, 0xc4, 0x01, 0x0a, 0x1c, 0x43, 0x6f,
+	0x6e, 0x66, 0x69, 0x72, 0x6d, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68, 0x61,
+	0x6e, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x20, 0x0a, 0x0b, 0x6e, 0x65,
+	0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0b, 0x6e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x12, 0x38, 0x0a, 0x17,
+	0x6e, 0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x17, 0x6e,
+	0x65, 0x77, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72,
+	0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x49, 0x44, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x49, 0x44, 0x12, 0x2a, 0x0a, 0x10, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x10,
+	0x63, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f, 0x64, 0x65,
+	0x22, 0x1f, 0x0a, 0x1d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x50, 0x61, 0x73, 0x73, 0x77,
+	0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x48, 0x0a, 0x12, 0x52, 0x65, 0x73, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x1c, 0x0a,
+	0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x44, 0x22, 0x3d, 0x0a, 0x13, 0x52,
+	0x65, 0x73, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x26, 0x0a, 0x0e, 0x72, 0x65, 0x73, 0x65, 0x6e, 0x64, 0x43, 0x6f, 0x6f, 0x6c,
+	0x64, 0x6f, 0x77, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x72, 0x65, 0x73, 0x65,
+	0x6e, 0x64, 0x43, 0x6f, 0x6f, 0x6c, 0x64, 0x6f, 0x77, 0x6e, 0x32, 0xf5, 0x03, 0x0a, 0x04, 0x61,
+	0x75, 0x74, 0x68, 0x12, 0x48, 0x0a, 0x0b, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x69, 0x67, 0x6e,
+	0x55, 0x70, 0x12, 0x1b, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61,
+	0x72, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x55, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1c, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53,
+	0x69, 0x67, 0x6e, 0x55, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4b, 0x0a,
+	0x0c, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x1c, 0x2e,
+	0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x45,
+	0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x61, 0x75,
+	0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x45, 0x6d, 0x61,
+	0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x39, 0x0a, 0x06, 0x53, 0x69,
+	0x67, 0x6e, 0x49, 0x6e, 0x12, 0x16, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53,
+	0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x61,
+	0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x69, 0x0a, 0x16, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x74,
+	0x65, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12,
+	0x26, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61,
+	0x74, 0x65, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76,
+	0x31, 0x2e, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x74, 0x65, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f,
+	0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x66, 0x0a, 0x15, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x50, 0x61, 0x73, 0x73, 0x77,
+	0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x12, 0x25, 0x2e, 0x61, 0x75, 0x74, 0x68,
+	0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x50, 0x61, 0x73, 0x73, 0x77,
+	0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x26, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x72, 0x6d, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0b, 0x52, 0x65, 0x73, 0x65,
+	0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x1b, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76,
+	0x31, 0x2e, 0x52, 0x65, 0x73, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x52,
+	0x65, 0x73, 0x65, 0x6e, 0x64, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x42, 0x10, 0x5a, 0x0e, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x75, 0x74, 0x68, 0x2f, 0x76,
+	0x31, 0x3b, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -137,19 +841,39 @@ func file_api_grpc_v1_auth_proto_rawDescGZIP() []byte {
 	return file_api_grpc_v1_auth_proto_rawDescData
 }
 
-var file_api_grpc_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_grpc_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_api_grpc_v1_auth_proto_goTypes = []any{
-	(*SendEmailRequest)(nil),  // 0: auth.v1.SendEmailRequest
-	(*SendEmailResponse)(nil), // 1: auth.v1.SendEmailResponse
+	(*StartSignUpRequest)(nil),             // 0: auth.v1.StartSignUpRequest
+	(*StartSignUpResponse)(nil),            // 1: auth.v1.StartSignUpResponse
+	(*ConfirmEmailRequest)(nil),            // 2: auth.v1.ConfirmEmailRequest
+	(*ConfirmEmailResponse)(nil),           // 3: auth.v1.ConfirmEmailResponse
+	(*SignInRequest)(nil),                  // 4: auth.v1.SignInRequest
+	(*SignInResponse)(nil),                 // 5: auth.v1.SignInResponse
+	(*InitiatePasswordChangeRequest)(nil),  // 6: auth.v1.InitiatePasswordChangeRequest
+	(*InitiatePasswordChangeResponse)(nil), // 7: auth.v1.InitiatePasswordChangeResponse
+	(*ConfirmPasswordChangeRequest)(nil),   // 8: auth.v1.ConfirmPasswordChangeRequest
+	(*ConfirmPasswordChangeResponse)(nil),  // 9: auth.v1.ConfirmPasswordChangeResponse
+	(*ResendEmailRequest)(nil),             // 10: auth.v1.ResendEmailRequest
+	(*ResendEmailResponse)(nil),            // 11: auth.v1.ResendEmailResponse
 }
 var file_api_grpc_v1_auth_proto_depIdxs = []int32{
-	0, // 0: auth.v1.auth.SendEmail:input_type -> auth.v1.SendEmailRequest
-	1, // 1: auth.v1.auth.SendEmail:output_type -> auth.v1.SendEmailResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: auth.v1.auth.StartSignUp:input_type -> auth.v1.StartSignUpRequest
+	2,  // 1: auth.v1.auth.ConfirmEmail:input_type -> auth.v1.ConfirmEmailRequest
+	4,  // 2: auth.v1.auth.SignIn:input_type -> auth.v1.SignInRequest
+	6,  // 3: auth.v1.auth.InitiatePasswordChange:input_type -> auth.v1.InitiatePasswordChangeRequest
+	8,  // 4: auth.v1.auth.ConfirmPasswordChange:input_type -> auth.v1.ConfirmPasswordChangeRequest
+	10, // 5: auth.v1.auth.ResendEmail:input_type -> auth.v1.ResendEmailRequest
+	1,  // 6: auth.v1.auth.StartSignUp:output_type -> auth.v1.StartSignUpResponse
+	3,  // 7: auth.v1.auth.ConfirmEmail:output_type -> auth.v1.ConfirmEmailResponse
+	5,  // 8: auth.v1.auth.SignIn:output_type -> auth.v1.SignInResponse
+	7,  // 9: auth.v1.auth.InitiatePasswordChange:output_type -> auth.v1.InitiatePasswordChangeResponse
+	9,  // 10: auth.v1.auth.ConfirmPasswordChange:output_type -> auth.v1.ConfirmPasswordChangeResponse
+	11, // 11: auth.v1.auth.ResendEmail:output_type -> auth.v1.ResendEmailResponse
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_api_grpc_v1_auth_proto_init() }
@@ -159,7 +883,7 @@ func file_api_grpc_v1_auth_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_api_grpc_v1_auth_proto_msgTypes[0].Exporter = func(v any, i int) any {
-			switch v := v.(*SendEmailRequest); i {
+			switch v := v.(*StartSignUpRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -171,7 +895,127 @@ func file_api_grpc_v1_auth_proto_init() {
 			}
 		}
 		file_api_grpc_v1_auth_proto_msgTypes[1].Exporter = func(v any, i int) any {
-			switch v := v.(*SendEmailResponse); i {
+			switch v := v.(*StartSignUpResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[2].Exporter = func(v any, i int) any {
+			switch v := v.(*ConfirmEmailRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[3].Exporter = func(v any, i int) any {
+			switch v := v.(*ConfirmEmailResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[4].Exporter = func(v any, i int) any {
+			switch v := v.(*SignInRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[5].Exporter = func(v any, i int) any {
+			switch v := v.(*SignInResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[6].Exporter = func(v any, i int) any {
+			switch v := v.(*InitiatePasswordChangeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[7].Exporter = func(v any, i int) any {
+			switch v := v.(*InitiatePasswordChangeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[8].Exporter = func(v any, i int) any {
+			switch v := v.(*ConfirmPasswordChangeRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[9].Exporter = func(v any, i int) any {
+			switch v := v.(*ConfirmPasswordChangeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[10].Exporter = func(v any, i int) any {
+			switch v := v.(*ResendEmailRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_grpc_v1_auth_proto_msgTypes[11].Exporter = func(v any, i int) any {
+			switch v := v.(*ResendEmailResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -189,7 +1033,7 @@ func file_api_grpc_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_grpc_v1_auth_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

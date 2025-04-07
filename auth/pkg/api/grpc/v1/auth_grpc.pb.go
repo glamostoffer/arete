@@ -21,14 +21,28 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SendEmail_FullMethodName = "/auth.v1.auth/SendEmail"
+	Auth_StartSignUp_FullMethodName            = "/auth.v1.auth/StartSignUp"
+	Auth_ConfirmEmail_FullMethodName           = "/auth.v1.auth/ConfirmEmail"
+	Auth_SignIn_FullMethodName                 = "/auth.v1.auth/SignIn"
+	Auth_InitiatePasswordChange_FullMethodName = "/auth.v1.auth/InitiatePasswordChange"
+	Auth_ConfirmPasswordChange_FullMethodName  = "/auth.v1.auth/ConfirmPasswordChange"
+	Auth_ResendEmail_FullMethodName            = "/auth.v1.auth/ResendEmail"
 )
 
 // AuthClient is the client API for Auth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
-	SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
+	// Регистрация
+	StartSignUp(ctx context.Context, in *StartSignUpRequest, opts ...grpc.CallOption) (*StartSignUpResponse, error)
+	ConfirmEmail(ctx context.Context, in *ConfirmEmailRequest, opts ...grpc.CallOption) (*ConfirmEmailResponse, error)
+	// Аутентификация
+	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
+	// Смена пароля
+	InitiatePasswordChange(ctx context.Context, in *InitiatePasswordChangeRequest, opts ...grpc.CallOption) (*InitiatePasswordChangeResponse, error)
+	ConfirmPasswordChange(ctx context.Context, in *ConfirmPasswordChangeRequest, opts ...grpc.CallOption) (*ConfirmPasswordChangeResponse, error)
+	// Повторное отправление письма
+	ResendEmail(ctx context.Context, in *ResendEmailRequest, opts ...grpc.CallOption) (*ResendEmailResponse, error)
 }
 
 type authClient struct {
@@ -39,10 +53,60 @@ func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 	return &authClient{cc}
 }
 
-func (c *authClient) SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error) {
+func (c *authClient) StartSignUp(ctx context.Context, in *StartSignUpRequest, opts ...grpc.CallOption) (*StartSignUpResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SendEmailResponse)
-	err := c.cc.Invoke(ctx, Auth_SendEmail_FullMethodName, in, out, cOpts...)
+	out := new(StartSignUpResponse)
+	err := c.cc.Invoke(ctx, Auth_StartSignUp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ConfirmEmail(ctx context.Context, in *ConfirmEmailRequest, opts ...grpc.CallOption) (*ConfirmEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConfirmEmailResponse)
+	err := c.cc.Invoke(ctx, Auth_ConfirmEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SignInResponse)
+	err := c.cc.Invoke(ctx, Auth_SignIn_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) InitiatePasswordChange(ctx context.Context, in *InitiatePasswordChangeRequest, opts ...grpc.CallOption) (*InitiatePasswordChangeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InitiatePasswordChangeResponse)
+	err := c.cc.Invoke(ctx, Auth_InitiatePasswordChange_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ConfirmPasswordChange(ctx context.Context, in *ConfirmPasswordChangeRequest, opts ...grpc.CallOption) (*ConfirmPasswordChangeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConfirmPasswordChangeResponse)
+	err := c.cc.Invoke(ctx, Auth_ConfirmPasswordChange_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ResendEmail(ctx context.Context, in *ResendEmailRequest, opts ...grpc.CallOption) (*ResendEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResendEmailResponse)
+	err := c.cc.Invoke(ctx, Auth_ResendEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +117,16 @@ func (c *authClient) SendEmail(ctx context.Context, in *SendEmailRequest, opts .
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
-	SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error)
+	// Регистрация
+	StartSignUp(context.Context, *StartSignUpRequest) (*StartSignUpResponse, error)
+	ConfirmEmail(context.Context, *ConfirmEmailRequest) (*ConfirmEmailResponse, error)
+	// Аутентификация
+	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
+	// Смена пароля
+	InitiatePasswordChange(context.Context, *InitiatePasswordChangeRequest) (*InitiatePasswordChangeResponse, error)
+	ConfirmPasswordChange(context.Context, *ConfirmPasswordChangeRequest) (*ConfirmPasswordChangeResponse, error)
+	// Повторное отправление письма
+	ResendEmail(context.Context, *ResendEmailRequest) (*ResendEmailResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -64,8 +137,23 @@ type AuthServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServer struct{}
 
-func (UnimplementedAuthServer) SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendEmail not implemented")
+func (UnimplementedAuthServer) StartSignUp(context.Context, *StartSignUpRequest) (*StartSignUpResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartSignUp not implemented")
+}
+func (UnimplementedAuthServer) ConfirmEmail(context.Context, *ConfirmEmailRequest) (*ConfirmEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmEmail not implemented")
+}
+func (UnimplementedAuthServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+}
+func (UnimplementedAuthServer) InitiatePasswordChange(context.Context, *InitiatePasswordChangeRequest) (*InitiatePasswordChangeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InitiatePasswordChange not implemented")
+}
+func (UnimplementedAuthServer) ConfirmPasswordChange(context.Context, *ConfirmPasswordChangeRequest) (*ConfirmPasswordChangeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmPasswordChange not implemented")
+}
+func (UnimplementedAuthServer) ResendEmail(context.Context, *ResendEmailRequest) (*ResendEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResendEmail not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -88,20 +176,110 @@ func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
 	s.RegisterService(&Auth_ServiceDesc, srv)
 }
 
-func _Auth_SendEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendEmailRequest)
+func _Auth_StartSignUp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartSignUpRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServer).SendEmail(ctx, in)
+		return srv.(AuthServer).StartSignUp(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Auth_SendEmail_FullMethodName,
+		FullMethod: Auth_StartSignUp_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).SendEmail(ctx, req.(*SendEmailRequest))
+		return srv.(AuthServer).StartSignUp(ctx, req.(*StartSignUpRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ConfirmEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).ConfirmEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_ConfirmEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).ConfirmEmail(ctx, req.(*ConfirmEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignInRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).SignIn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_SignIn_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).SignIn(ctx, req.(*SignInRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_InitiatePasswordChange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InitiatePasswordChangeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).InitiatePasswordChange(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_InitiatePasswordChange_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).InitiatePasswordChange(ctx, req.(*InitiatePasswordChangeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ConfirmPasswordChange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmPasswordChangeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).ConfirmPasswordChange(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_ConfirmPasswordChange_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).ConfirmPasswordChange(ctx, req.(*ConfirmPasswordChangeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ResendEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResendEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).ResendEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_ResendEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).ResendEmail(ctx, req.(*ResendEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -114,8 +292,28 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SendEmail",
-			Handler:    _Auth_SendEmail_Handler,
+			MethodName: "StartSignUp",
+			Handler:    _Auth_StartSignUp_Handler,
+		},
+		{
+			MethodName: "ConfirmEmail",
+			Handler:    _Auth_ConfirmEmail_Handler,
+		},
+		{
+			MethodName: "SignIn",
+			Handler:    _Auth_SignIn_Handler,
+		},
+		{
+			MethodName: "InitiatePasswordChange",
+			Handler:    _Auth_InitiatePasswordChange_Handler,
+		},
+		{
+			MethodName: "ConfirmPasswordChange",
+			Handler:    _Auth_ConfirmPasswordChange_Handler,
+		},
+		{
+			MethodName: "ResendEmail",
+			Handler:    _Auth_ResendEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
