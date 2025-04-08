@@ -17,18 +17,20 @@ const (
 )
 
 func New(cfg Config) Connector {
-	return Connector{
+	conn := Connector{
 		cfg: cfg,
 	}
+
+	conn.Client = redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%s", cfg.Host, cfg.Port),
+		Password: cfg.Password,
+		DB:       cfg.DB,
+	})
+
+	return conn
 }
 
 func (c *Connector) Start(ctx context.Context) error {
-	c.Client = redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", c.cfg.Host, c.cfg.Port),
-		Password: c.cfg.Password,
-		DB:       c.cfg.DB,
-	})
-
 	_, err := c.Ping(ctx).Result()
 	if err != nil {
 		return err

@@ -3,6 +3,7 @@ package psqlconn
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -19,9 +20,18 @@ type Connector struct {
 }
 
 func New(cfg Config) Connector {
-	return Connector{
+	conn := Connector{
 		cfg: cfg,
 	}
+
+	db, err := sqlx.Connect(driverName, getConnString(cfg))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	conn.DB = db
+
+	return conn
 }
 
 func getConnString(cfg Config) string {
@@ -36,11 +46,6 @@ func getConnString(cfg Config) string {
 }
 
 func (c *Connector) Start(_ context.Context) (err error) {
-	c.DB, err = sqlx.Connect(driverName, getConnString(c.cfg))
-	if err != nil {
-		return err
-	}
-
 	err = c.DB.Ping()
 	if err != nil {
 		return err
