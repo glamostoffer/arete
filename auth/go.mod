@@ -8,7 +8,6 @@ require (
 	github.com/glamostoffer/arete/auth/pkg v0.0.0-00010101000000-000000000000
 	github.com/glamostoffer/arete/pkg v0.0.0-20250408200434-b1a3f717d022
 	github.com/go-playground/validator v9.31.0+incompatible
-	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/redis/go-redis/v9 v9.7.3
