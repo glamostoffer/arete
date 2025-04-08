@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	driverName    = "pgx"
+	driverName    = "postgres"
 	componentName = "psqlconn"
 )
 
