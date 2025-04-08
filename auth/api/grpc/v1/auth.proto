@@ -6,10 +6,90 @@ package auth.v1;
 option go_package = "api/auth/v1;v1";
 
 service auth {
-    rpc SendEmail (SendEmailRequest) returns (SendEmailResponse); 
+    // Регистрация
+    rpc StartSignUp (StartSignUpRequest) returns (StartSignUpResponse);
+    rpc ConfirmEmail (ConfirmEmailRequest) returns (ConfirmEmailResponse);
+
+    // Аутентификация
+    rpc SignIn (SignInRequest) returns (SignInResponse);
+    rpc VerifyCredentials(VerifyCredentialsRequest) returns (VerifyCredentialsResponse);
+    rpc RefreshSession(RefreshSessionRequest) returns (RefreshSessionResponse);
+
+    // Смена пароля
+    rpc InitiatePasswordChange (InitiatePasswordChangeRequest) returns (InitiatePasswordChangeResponse);
+    rpc ConfirmPasswordChange (ConfirmPasswordChangeRequest) returns (ConfirmPasswordChangeResponse);
+
+    // Повторное отправление письма
+    rpc ResendEmail (ResendEmailRequest) returns (ResendEmailResponse);
 }
 
-message SendEmailRequest {
-    string address = 1;
+message StartSignUpRequest {
+    string login = 1;
+    string email = 2;
+    string password = 3;
+    string passwordConfirmation = 4;
 }
-message SendEmailResponse {}
+message StartSignUpResponse {
+    int64 resendCooldown = 1;
+}
+
+message ConfirmEmailRequest {
+    string confirmationCode = 1;
+    string email = 2;
+    string ip = 3;
+    string userAgent = 4;
+}
+message ConfirmEmailResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message SignInRequest {
+    string login = 1; // login or email
+    string password = 2;
+    string ip = 3;
+    string userAgent = 4;
+}
+message SignInResponse {
+    string accessToken = 1;
+    string refreashToken = 2;
+}
+
+message VerifyCredentialsRequest {
+    string accessToken = 1;
+}
+message VerifyCredentialsResponse {
+    int64 userID = 1;
+}
+
+message RefreshSessionRequest {
+    string refreshToken = 1;
+}
+message RefreshSessionResponse {
+    string accessToken = 1;
+}
+
+message InitiatePasswordChangeRequest {
+    string email = 1;
+}
+message InitiatePasswordChangeResponse {
+    string sessionID = 1;
+    int64 resendCooldown = 2;
+}
+
+message ConfirmPasswordChangeRequest {
+    string newPassword = 1;
+    string newPasswordConfirmation = 2;
+    string sessionID = 3;
+    string confirmationCode = 4;
+}
+message ConfirmPasswordChangeResponse {
+}
+
+message ResendEmailRequest {
+    string email = 1;
+    string sessionID = 2;
+}
+message ResendEmailResponse {
+    int64 resendCooldown = 1; // время, через которое можно отправить письмо ещё раз
+}

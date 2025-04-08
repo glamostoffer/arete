@@ -19,6 +19,7 @@ func New(cfg Config) Sender {
 
 func (s *Sender) SendHTMLMail(ctx context.Context, req dto.SendEmailRequest) error {
 	m := gomail.NewMessage()
+	m.SetHeader("From", s.cfg.Login)
 	m.SetHeader("To", req.Recipient)
 	m.SetHeader("Subject", req.Subject)
 	m.SetBody(req.ContentType, req.Body)

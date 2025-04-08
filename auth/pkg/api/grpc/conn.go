@@ -16,6 +16,16 @@ type connector struct {
 	conn *grpc.ClientConn
 }
 
+const (
+	componentName = "grpc-connector"
+)
+
+func New(cfg Config) *connector {
+	return &connector{
+		cfg: cfg,
+	}
+}
+
 func (c *connector) Start(ctx context.Context) error {
 	options := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -34,4 +44,12 @@ func (c *connector) Start(ctx context.Context) error {
 	c.AuthClient = v1.NewAuthClient(c.conn)
 
 	return nil
+}
+
+func (c *connector) Stop(ctx context.Context) error {
+	return c.conn.Close()
+}
+
+func (c *connector) GetName() string {
+	return componentName
 }

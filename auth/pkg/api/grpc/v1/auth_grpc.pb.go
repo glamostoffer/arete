@@ -24,6 +24,8 @@ const (
 	Auth_StartSignUp_FullMethodName            = "/auth.v1.auth/StartSignUp"
 	Auth_ConfirmEmail_FullMethodName           = "/auth.v1.auth/ConfirmEmail"
 	Auth_SignIn_FullMethodName                 = "/auth.v1.auth/SignIn"
+	Auth_VerifyCredentials_FullMethodName      = "/auth.v1.auth/VerifyCredentials"
+	Auth_RefreshSession_FullMethodName         = "/auth.v1.auth/RefreshSession"
 	Auth_InitiatePasswordChange_FullMethodName = "/auth.v1.auth/InitiatePasswordChange"
 	Auth_ConfirmPasswordChange_FullMethodName  = "/auth.v1.auth/ConfirmPasswordChange"
 	Auth_ResendEmail_FullMethodName            = "/auth.v1.auth/ResendEmail"
@@ -38,6 +40,8 @@ type AuthClient interface {
 	ConfirmEmail(ctx context.Context, in *ConfirmEmailRequest, opts ...grpc.CallOption) (*ConfirmEmailResponse, error)
 	// Аутентификация
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
+	VerifyCredentials(ctx context.Context, in *VerifyCredentialsRequest, opts ...grpc.CallOption) (*VerifyCredentialsResponse, error)
+	RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*RefreshSessionResponse, error)
 	// Смена пароля
 	InitiatePasswordChange(ctx context.Context, in *InitiatePasswordChangeRequest, opts ...grpc.CallOption) (*InitiatePasswordChangeResponse, error)
 	ConfirmPasswordChange(ctx context.Context, in *ConfirmPasswordChangeRequest, opts ...grpc.CallOption) (*ConfirmPasswordChangeResponse, error)
@@ -83,6 +87,26 @@ func (c *authClient) SignIn(ctx context.Context, in *SignInRequest, opts ...grpc
 	return out, nil
 }
 
+func (c *authClient) VerifyCredentials(ctx context.Context, in *VerifyCredentialsRequest, opts ...grpc.CallOption) (*VerifyCredentialsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(VerifyCredentialsResponse)
+	err := c.cc.Invoke(ctx, Auth_VerifyCredentials_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) RefreshSession(ctx context.Context, in *RefreshSessionRequest, opts ...grpc.CallOption) (*RefreshSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RefreshSessionResponse)
+	err := c.cc.Invoke(ctx, Auth_RefreshSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *authClient) InitiatePasswordChange(ctx context.Context, in *InitiatePasswordChangeRequest, opts ...grpc.CallOption) (*InitiatePasswordChangeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(InitiatePasswordChangeResponse)
@@ -122,6 +146,8 @@ type AuthServer interface {
 	ConfirmEmail(context.Context, *ConfirmEmailRequest) (*ConfirmEmailResponse, error)
 	// Аутентификация
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
+	VerifyCredentials(context.Context, *VerifyCredentialsRequest) (*VerifyCredentialsResponse, error)
+	RefreshSession(context.Context, *RefreshSessionRequest) (*RefreshSessionResponse, error)
 	// Смена пароля
 	InitiatePasswordChange(context.Context, *InitiatePasswordChangeRequest) (*InitiatePasswordChangeResponse, error)
 	ConfirmPasswordChange(context.Context, *ConfirmPasswordChangeRequest) (*ConfirmPasswordChangeResponse, error)
@@ -145,6 +171,12 @@ func (UnimplementedAuthServer) ConfirmEmail(context.Context, *ConfirmEmailReques
 }
 func (UnimplementedAuthServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+}
+func (UnimplementedAuthServer) VerifyCredentials(context.Context, *VerifyCredentialsRequest) (*VerifyCredentialsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyCredentials not implemented")
+}
+func (UnimplementedAuthServer) RefreshSession(context.Context, *RefreshSessionRequest) (*RefreshSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshSession not implemented")
 }
 func (UnimplementedAuthServer) InitiatePasswordChange(context.Context, *InitiatePasswordChangeRequest) (*InitiatePasswordChangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitiatePasswordChange not implemented")
@@ -230,6 +262,42 @@ func _Auth_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_VerifyCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyCredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).VerifyCredentials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_VerifyCredentials_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).VerifyCredentials(ctx, req.(*VerifyCredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_RefreshSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RefreshSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).RefreshSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_RefreshSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).RefreshSession(ctx, req.(*RefreshSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Auth_InitiatePasswordChange_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InitiatePasswordChangeRequest)
 	if err := dec(in); err != nil {
@@ -302,6 +370,14 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignIn",
 			Handler:    _Auth_SignIn_Handler,
+		},
+		{
+			MethodName: "VerifyCredentials",
+			Handler:    _Auth_VerifyCredentials_Handler,
+		},
+		{
+			MethodName: "RefreshSession",
+			Handler:    _Auth_RefreshSession_Handler,
 		},
 		{
 			MethodName: "InitiatePasswordChange",
