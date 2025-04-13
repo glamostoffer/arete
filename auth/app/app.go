@@ -24,13 +24,8 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	rd := redis.New(cfg.Redis)
 	sender := email.New(cfg.EmailSender)
 
-	log.Printf("psql.DB: %+v", psql.DB)
 	repo := repository.New(psql.DB)
-	log.Printf("repo: %+v", repo)
-
-	log.Printf("rc.Client: %+v", rd.Client)
 	ch := cache.New(rd.Client)
-	log.Printf("ch: %+v", ch)
 
 	srv := service.New(
 		cfg.Service,
@@ -40,6 +35,8 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	)
 
 	hdlr := handler.New(srv)
+
+	log.Printf("%+v", cfg.GRPC)
 
 	grpcServ := server.New(
 		cfg.GRPC,
@@ -59,15 +56,9 @@ func Run(ctx context.Context, cfg *config.Config) error {
 		if err != nil {
 			return err
 		}
+		log.Printf("%s started", cmp.GetName())
 	}
 
-	log.Print("application started!")
-
-	log.Printf("psql.DB: %+v", psql.DB)
-	log.Printf("repo: %+v", repo)
-
-	log.Printf("rc.Client: %+v", rd.Client)
-	log.Printf("ch: %+v", ch)
 	quitCh := make(chan os.Signal, 1)
 	signal.Notify(quitCh, os.Interrupt, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	interruptSignal := <-quitCh
@@ -79,6 +70,8 @@ func Run(ctx context.Context, cfg *config.Config) error {
 		if err != nil {
 			return err
 		}
+
+		log.Printf("%s stopped", cmp.GetName())
 	}
 
 	return nil

@@ -14,6 +14,7 @@ service auth {
     rpc SignIn (SignInRequest) returns (SignInResponse);
     rpc VerifyCredentials(VerifyCredentialsRequest) returns (VerifyCredentialsResponse);
     rpc RefreshSession(RefreshSessionRequest) returns (RefreshSessionResponse);
+    // rpc SignOut (SignOutRequest) returns (SignOutResponse);
 
     // Смена пароля
     rpc InitiatePasswordChange (InitiatePasswordChangeRequest) returns (InitiatePasswordChangeResponse);
@@ -21,6 +22,8 @@ service auth {
 
     // Повторное отправление письма
     rpc ResendEmail (ResendEmailRequest) returns (ResendEmailResponse);
+
+    rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
 }
 
 message StartSignUpRequest {
@@ -92,4 +95,13 @@ message ResendEmailRequest {
 }
 message ResendEmailResponse {
     int64 resendCooldown = 1; // время, через которое можно отправить письмо ещё раз
+}
+
+message GetUserInfoRequest {
+    int64 userID = 1;
+}
+message GetUserInfoResponse {
+    string email = 1;
+    string login = 2;
+    int64 registrationDate = 3;
 }

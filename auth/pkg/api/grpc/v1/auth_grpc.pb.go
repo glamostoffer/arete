@@ -29,6 +29,7 @@ const (
 	Auth_InitiatePasswordChange_FullMethodName = "/auth.v1.auth/InitiatePasswordChange"
 	Auth_ConfirmPasswordChange_FullMethodName  = "/auth.v1.auth/ConfirmPasswordChange"
 	Auth_ResendEmail_FullMethodName            = "/auth.v1.auth/ResendEmail"
+	Auth_GetUserInfo_FullMethodName            = "/auth.v1.auth/GetUserInfo"
 )
 
 // AuthClient is the client API for Auth service.
@@ -47,6 +48,7 @@ type AuthClient interface {
 	ConfirmPasswordChange(ctx context.Context, in *ConfirmPasswordChangeRequest, opts ...grpc.CallOption) (*ConfirmPasswordChangeResponse, error)
 	// Повторное отправление письма
 	ResendEmail(ctx context.Context, in *ResendEmailRequest, opts ...grpc.CallOption) (*ResendEmailResponse, error)
+	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 }
 
 type authClient struct {
@@ -137,6 +139,16 @@ func (c *authClient) ResendEmail(ctx context.Context, in *ResendEmailRequest, op
 	return out, nil
 }
 
+func (c *authClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserInfoResponse)
+	err := c.cc.Invoke(ctx, Auth_GetUserInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
@@ -153,6 +165,7 @@ type AuthServer interface {
 	ConfirmPasswordChange(context.Context, *ConfirmPasswordChangeRequest) (*ConfirmPasswordChangeResponse, error)
 	// Повторное отправление письма
 	ResendEmail(context.Context, *ResendEmailRequest) (*ResendEmailResponse, error)
+	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -186,6 +199,9 @@ func (UnimplementedAuthServer) ConfirmPasswordChange(context.Context, *ConfirmPa
 }
 func (UnimplementedAuthServer) ResendEmail(context.Context, *ResendEmailRequest) (*ResendEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResendEmail not implemented")
+}
+func (UnimplementedAuthServer) GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -352,6 +368,24 @@ func _Auth_ResendEmail_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).GetUserInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_GetUserInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).GetUserInfo(ctx, req.(*GetUserInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -390,6 +424,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ResendEmail",
 			Handler:    _Auth_ResendEmail_Handler,
+		},
+		{
+			MethodName: "GetUserInfo",
+			Handler:    _Auth_GetUserInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

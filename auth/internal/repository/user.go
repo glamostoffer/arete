@@ -79,3 +79,12 @@ func (r *repository) UpdateUser(ctx context.Context, user domain.User) error {
 
 	return nil
 }
+
+func (r *repository) GetUser(ctx context.Context, userID int64) (user domain.User, err error) {
+	err = r.db.GetContext(ctx, &user, queryGetUser, userID)
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	return user, nil
+}

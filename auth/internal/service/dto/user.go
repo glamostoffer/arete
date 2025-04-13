@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/glamostoffer/arete/auth/internal/domain"
+
 type StartSignUpRequest struct {
 	Login    string `json:"login"`
 	Email    string `json:"email"`
@@ -29,4 +31,11 @@ type SignInRequest struct {
 type SignInResponse struct {
 	AccessToken  string
 	RefreshToken string
+}
+
+type GetUserInfoRequest struct {
+	UserID int64
+}
+type GetUserInfoResponse struct {
+	domain.User
 }

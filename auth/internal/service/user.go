@@ -3,6 +3,8 @@ package service
 import (
 	"context"
 	"crypto/rand"
+	"database/sql"
+	"errors"
 	"math/big"
 	"strings"
 	"time"
@@ -90,6 +92,9 @@ func (s *service) ConfirmEmail(ctx context.Context, req dto.ConfirmEmailRequest)
 		IP:        req.IP,
 		UserAgent: req.UserAgent,
 	})
+	if err != nil {
+		return res, err
+	}
 
 	return dto.ConfirmEmailResponse{
 		AccessToken:  tokens.AccessToken,
@@ -98,6 +103,42 @@ func (s *service) ConfirmEmail(ctx context.Context, req dto.ConfirmEmailRequest)
 }
 
 func (s *service) SignIn(ctx context.Context, req dto.SignInRequest) (res dto.SignInResponse, err error) {
+	user, err := s.repo.GetUserByLoginOrEmail(ctx, req.Login)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return res, errlist.ErrInvalidLoginOrPass
+		}
 
-	return res, nil
+		return res, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashPassword), []byte(req.Password))
+	if err != nil {
+		return res, errlist.ErrInvalidLoginOrPass
+	}
+
+	tokens, err := s.CreateSession(ctx, dto.CreateUserSessionRequest{
+		User:      user,
+		IP:        req.IP,
+		UserAgent: req.UserAgent,
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return dto.SignInResponse{
+		AccessToken:  tokens.AccessToken,
+		RefreshToken: tokens.RefreshToken,
+	}, nil
+}
+
+func (s *service) GetUserInfo(ctx context.Context, req dto.GetUserInfoRequest) (res dto.GetUserInfoResponse, err error) {
+	user, err := s.repo.GetUser(ctx, req.UserID)
+	if err != nil {
+		return res, err
+	}
+
+	return dto.GetUserInfoResponse{
+		User: user,
+	}, nil
 }

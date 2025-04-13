@@ -12,6 +12,7 @@ type repository interface {
 	GetUserByLoginOrEmail(ctx context.Context, login string) (user domain.User, err error)
 	CheckUserExists(ctx context.Context, login, email string) (bool, error)
 	UpdateUser(ctx context.Context, user domain.User) error
+	GetUser(ctx context.Context, userID int64) (user domain.User, err error)
 }
 
 type cache interface {

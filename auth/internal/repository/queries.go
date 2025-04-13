@@ -33,4 +33,13 @@ const (
 	where
 		id = $1;
 	`
+
+	queryGetUser = `
+		select
+			id, login, email, hash_password, registration_date
+		from
+			public."user"
+		where 
+			id = $1;
+	`
 )
