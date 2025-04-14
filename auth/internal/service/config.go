@@ -5,10 +5,10 @@ import (
 )
 
 type Config struct {
-	ResendCooldown   duration.Duration // todo: make map[attempts]cooldown
-	SignUpSessionTTL duration.Duration
+	ResendCooldown   duration.Duration `validate:"required"` // todo: make map[attempts]cooldown
+	SignUpSessionTTL duration.Duration `validate:"required"`
 
-	Secret         string
-	UserSessionTTL duration.Duration
-	AccessTokenTTL duration.Duration
+	Secret         string            `validate:"required"`
+	UserSessionTTL duration.Duration `validate:"required"`
+	AccessTokenTTL duration.Duration `validate:"required"`
 }

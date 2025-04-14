@@ -12,29 +12,29 @@ type StartSignUpResponse struct {
 }
 
 type ConfirmEmailRequest struct {
-	Email            string
-	ConfirmationCode string
-	IP               string
-	UserAgent        string
+	Email            string `json:"email"`
+	ConfirmationCode string `json:"confirmationCode"`
+	IP               string `json:"ip"`
+	UserAgent        string `json:"userAgent"`
 }
 type ConfirmEmailResponse struct {
-	AccessToken  string
-	RefreshToken string
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
 }
 
 type SignInRequest struct {
-	Login     string
-	Password  string
-	IP        string
-	UserAgent string
+	Login     string `json:"login"`
+	Password  string `json:"password"`
+	IP        string `json:"ip"`
+	UserAgent string `json:"userAgent"`
 }
 type SignInResponse struct {
-	AccessToken  string
-	RefreshToken string
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
 }
 
 type GetUserInfoRequest struct {
-	UserID int64
+	UserID int64 `json:"userID"`
 }
 type GetUserInfoResponse struct {
 	domain.User

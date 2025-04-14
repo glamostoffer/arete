@@ -12,7 +12,8 @@ import (
 	"github.com/glamostoffer/arete/auth/internal/cache"
 	"github.com/glamostoffer/arete/auth/internal/repository"
 	"github.com/glamostoffer/arete/auth/internal/service"
-	handler "github.com/glamostoffer/arete/auth/internal/transport/grpc"
+	grpchandler "github.com/glamostoffer/arete/auth/internal/transport/grpc"
+	httphandler "github.com/glamostoffer/arete/auth/internal/transport/http"
 	"github.com/glamostoffer/arete/auth/pkg/email"
 	"github.com/glamostoffer/arete/pkg/component"
 	"github.com/glamostoffer/arete/pkg/psqlconn"
@@ -34,19 +35,23 @@ func Run(ctx context.Context, cfg *config.Config) error {
 		ch,
 	)
 
-	hdlr := handler.New(srv)
+	grpcHandler := grpchandler.New(srv)
+	httpHandler := httphandler.New(srv)
 
-	log.Printf("%+v", cfg.GRPC)
-
-	grpcServ := server.New(
+	grpcServ := server.NewGRPC(
 		cfg.GRPC,
-		hdlr,
+		grpcHandler,
+	)
+	httpServ := server.NewHTTP(
+		cfg.HTTP,
+		httpHandler,
 	)
 
 	cmps := []component.Component{
 		&psql,
 		&rd,
 		&grpcServ,
+		&httpServ,
 	}
 
 	var err error

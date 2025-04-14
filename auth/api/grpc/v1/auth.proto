@@ -5,7 +5,7 @@ package auth.v1;
 
 option go_package = "api/auth/v1;v1";
 
-service auth {
+service Auth {
     // Регистрация
     rpc StartSignUp (StartSignUpRequest) returns (StartSignUpResponse);
     rpc ConfirmEmail (ConfirmEmailRequest) returns (ConfirmEmailResponse);

@@ -1106,7 +1106,7 @@ var file_api_grpc_v1_auth_proto_rawDesc = []byte{
 	0x6e, 0x12, 0x2a, 0x0a, 0x10, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x72, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x44, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x10, 0x72, 0x65, 0x67,
 	0x69, 0x73, 0x74, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x61, 0x74, 0x65, 0x32, 0xee, 0x05,
-	0x0a, 0x04, 0x61, 0x75, 0x74, 0x68, 0x12, 0x48, 0x0a, 0x0b, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53,
+	0x0a, 0x04, 0x41, 0x75, 0x74, 0x68, 0x12, 0x48, 0x0a, 0x0b, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53,
 	0x69, 0x67, 0x6e, 0x55, 0x70, 0x12, 0x1b, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e,
 	0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x55, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61,
@@ -1191,24 +1191,24 @@ var file_api_grpc_v1_auth_proto_goTypes = []any{
 	(*GetUserInfoResponse)(nil),            // 17: auth.v1.GetUserInfoResponse
 }
 var file_api_grpc_v1_auth_proto_depIdxs = []int32{
-	0,  // 0: auth.v1.auth.StartSignUp:input_type -> auth.v1.StartSignUpRequest
-	2,  // 1: auth.v1.auth.ConfirmEmail:input_type -> auth.v1.ConfirmEmailRequest
-	4,  // 2: auth.v1.auth.SignIn:input_type -> auth.v1.SignInRequest
-	6,  // 3: auth.v1.auth.VerifyCredentials:input_type -> auth.v1.VerifyCredentialsRequest
-	8,  // 4: auth.v1.auth.RefreshSession:input_type -> auth.v1.RefreshSessionRequest
-	10, // 5: auth.v1.auth.InitiatePasswordChange:input_type -> auth.v1.InitiatePasswordChangeRequest
-	12, // 6: auth.v1.auth.ConfirmPasswordChange:input_type -> auth.v1.ConfirmPasswordChangeRequest
-	14, // 7: auth.v1.auth.ResendEmail:input_type -> auth.v1.ResendEmailRequest
-	16, // 8: auth.v1.auth.GetUserInfo:input_type -> auth.v1.GetUserInfoRequest
-	1,  // 9: auth.v1.auth.StartSignUp:output_type -> auth.v1.StartSignUpResponse
-	3,  // 10: auth.v1.auth.ConfirmEmail:output_type -> auth.v1.ConfirmEmailResponse
-	5,  // 11: auth.v1.auth.SignIn:output_type -> auth.v1.SignInResponse
-	7,  // 12: auth.v1.auth.VerifyCredentials:output_type -> auth.v1.VerifyCredentialsResponse
-	9,  // 13: auth.v1.auth.RefreshSession:output_type -> auth.v1.RefreshSessionResponse
-	11, // 14: auth.v1.auth.InitiatePasswordChange:output_type -> auth.v1.InitiatePasswordChangeResponse
-	13, // 15: auth.v1.auth.ConfirmPasswordChange:output_type -> auth.v1.ConfirmPasswordChangeResponse
-	15, // 16: auth.v1.auth.ResendEmail:output_type -> auth.v1.ResendEmailResponse
-	17, // 17: auth.v1.auth.GetUserInfo:output_type -> auth.v1.GetUserInfoResponse
+	0,  // 0: auth.v1.Auth.StartSignUp:input_type -> auth.v1.StartSignUpRequest
+	2,  // 1: auth.v1.Auth.ConfirmEmail:input_type -> auth.v1.ConfirmEmailRequest
+	4,  // 2: auth.v1.Auth.SignIn:input_type -> auth.v1.SignInRequest
+	6,  // 3: auth.v1.Auth.VerifyCredentials:input_type -> auth.v1.VerifyCredentialsRequest
+	8,  // 4: auth.v1.Auth.RefreshSession:input_type -> auth.v1.RefreshSessionRequest
+	10, // 5: auth.v1.Auth.InitiatePasswordChange:input_type -> auth.v1.InitiatePasswordChangeRequest
+	12, // 6: auth.v1.Auth.ConfirmPasswordChange:input_type -> auth.v1.ConfirmPasswordChangeRequest
+	14, // 7: auth.v1.Auth.ResendEmail:input_type -> auth.v1.ResendEmailRequest
+	16, // 8: auth.v1.Auth.GetUserInfo:input_type -> auth.v1.GetUserInfoRequest
+	1,  // 9: auth.v1.Auth.StartSignUp:output_type -> auth.v1.StartSignUpResponse
+	3,  // 10: auth.v1.Auth.ConfirmEmail:output_type -> auth.v1.ConfirmEmailResponse
+	5,  // 11: auth.v1.Auth.SignIn:output_type -> auth.v1.SignInResponse
+	7,  // 12: auth.v1.Auth.VerifyCredentials:output_type -> auth.v1.VerifyCredentialsResponse
+	9,  // 13: auth.v1.Auth.RefreshSession:output_type -> auth.v1.RefreshSessionResponse
+	11, // 14: auth.v1.Auth.InitiatePasswordChange:output_type -> auth.v1.InitiatePasswordChangeResponse
+	13, // 15: auth.v1.Auth.ConfirmPasswordChange:output_type -> auth.v1.ConfirmPasswordChangeResponse
+	15, // 16: auth.v1.Auth.ResendEmail:output_type -> auth.v1.ResendEmailResponse
+	17, // 17: auth.v1.Auth.GetUserInfo:output_type -> auth.v1.GetUserInfoResponse
 	9,  // [9:18] is the sub-list for method output_type
 	0,  // [0:9] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name

@@ -13,12 +13,13 @@ import (
 )
 
 type Config struct {
-	Service     service.Config
-	EmailSender email.Config
+	Service     service.Config `validate:"required"`
+	EmailSender email.Config   `validate:"required"`
 
-	Postgres psqlconn.Config
-	Redis    redis.Config
-	GRPC     server.Config
+	Postgres psqlconn.Config   `validate:"required"`
+	Redis    redis.Config      `validate:"required"`
+	GRPC     server.ConfigGRPC `validate:"required"`
+	HTTP     server.ConfigHTTP `validate:"required"`
 }
 
 const (

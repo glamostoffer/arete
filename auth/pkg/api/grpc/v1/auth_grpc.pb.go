@@ -21,15 +21,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_StartSignUp_FullMethodName            = "/auth.v1.auth/StartSignUp"
-	Auth_ConfirmEmail_FullMethodName           = "/auth.v1.auth/ConfirmEmail"
-	Auth_SignIn_FullMethodName                 = "/auth.v1.auth/SignIn"
-	Auth_VerifyCredentials_FullMethodName      = "/auth.v1.auth/VerifyCredentials"
-	Auth_RefreshSession_FullMethodName         = "/auth.v1.auth/RefreshSession"
-	Auth_InitiatePasswordChange_FullMethodName = "/auth.v1.auth/InitiatePasswordChange"
-	Auth_ConfirmPasswordChange_FullMethodName  = "/auth.v1.auth/ConfirmPasswordChange"
-	Auth_ResendEmail_FullMethodName            = "/auth.v1.auth/ResendEmail"
-	Auth_GetUserInfo_FullMethodName            = "/auth.v1.auth/GetUserInfo"
+	Auth_StartSignUp_FullMethodName            = "/auth.v1.Auth/StartSignUp"
+	Auth_ConfirmEmail_FullMethodName           = "/auth.v1.Auth/ConfirmEmail"
+	Auth_SignIn_FullMethodName                 = "/auth.v1.Auth/SignIn"
+	Auth_VerifyCredentials_FullMethodName      = "/auth.v1.Auth/VerifyCredentials"
+	Auth_RefreshSession_FullMethodName         = "/auth.v1.Auth/RefreshSession"
+	Auth_InitiatePasswordChange_FullMethodName = "/auth.v1.Auth/InitiatePasswordChange"
+	Auth_ConfirmPasswordChange_FullMethodName  = "/auth.v1.Auth/ConfirmPasswordChange"
+	Auth_ResendEmail_FullMethodName            = "/auth.v1.Auth/ResendEmail"
+	Auth_GetUserInfo_FullMethodName            = "/auth.v1.Auth/GetUserInfo"
 )
 
 // AuthClient is the client API for Auth service.
@@ -390,7 +390,7 @@ func _Auth_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(in
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Auth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth.v1.auth",
+	ServiceName: "auth.v1.Auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

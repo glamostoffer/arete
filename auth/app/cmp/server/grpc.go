@@ -14,15 +14,15 @@ import (
 type GRPCServer struct {
 	*grpc.Server
 
-	cfg  Config
+	cfg  ConfigGRPC
 	auth v1.AuthServer
 }
 
 const (
-	componentName = "grpc-server"
+	grpcComponentName = "grpc-server"
 )
 
-func New(cfg Config, auth v1.AuthServer) GRPCServer {
+func NewGRPC(cfg ConfigGRPC, auth v1.AuthServer) GRPCServer {
 	return GRPCServer{
 		cfg:  cfg,
 		auth: auth,
@@ -52,7 +52,7 @@ func (s *GRPCServer) Start(ctx context.Context) error {
 
 	go func() {
 		if err := s.Server.Serve(listener); err != nil {
-			log.Fatalf("failed to serve: %v", err)
+			log.Fatalf("GRPC server error: %v", err)
 		}
 	}()
 
@@ -65,5 +65,5 @@ func (s *GRPCServer) Stop(ctx context.Context) error {
 }
 
 func (s *GRPCServer) GetName() string {
-	return componentName
+	return grpcComponentName
 }
