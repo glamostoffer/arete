@@ -1,0 +1,23 @@
+FROM golang:1.23.7 AS plugin-builder
+
+WORKDIR /app
+
+COPY plugins/go.mod plugins/go.sum ./plugins/
+COPY plugins/auth.go ./plugins/
+
+RUN cd plugins && \
+    go build -buildmode=plugin -o auth.so auth.go
+
+FROM devopsfaith/krakend:2.9.3
+
+COPY krakend.json /etc/krakend/krakend.json
+
+COPY --from=plugin-builder /app/plugins/auth.so /etc/krakend/plugins/
+
+USER root
+RUN chown -R 1000:1000 /etc/krakend
+USER krakend
+
+EXPOSE 8080
+
+CMD ["run", "-c", "/etc/krakend/krakend.json", "-d"]

@@ -13,15 +13,15 @@ type CreateUserSessionResponse struct {
 }
 
 type VerifyCredentialsRequest struct {
-	AccessToken string
+	AccessToken string `json:"accessToken"`
 }
 type VerifyCredentialsResponse struct {
-	UserID int64
+	UserID int64 `json:"userID"`
 }
 
 type RefreshSessionRequest struct {
 	RefreshToken string
 }
 type RefreshSessionResponse struct {
-	AccessToken string
+	AccessToken string `json:"accessToken"`
 }

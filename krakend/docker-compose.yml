@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  krakend:
+    build: .
+    container_name: krakend_gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./krakend.json:/etc/krakend/krakend.json
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

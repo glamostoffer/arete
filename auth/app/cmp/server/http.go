@@ -90,7 +90,7 @@ func (s *HTTPServer) setupRoutes() {
 		}
 		user := api.Group("/user")
 		{
-			user.POST("", s.handler.GetUserInfo)
+			user.GET("", s.handler.GetUserInfo)
 		}
 	}
 }

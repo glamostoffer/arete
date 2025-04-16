@@ -1,0 +1,4 @@
+github.com/luraproject/lura/v2 v2.9.0 h1:JeqlrUz0wM4ITVHOtEaFJ5sS6TW25/lTDmMCsQUY44U=
+github.com/luraproject/lura/v2 v2.9.0/go.mod h1:pJQDsCSSrE5udlzkLvUnFkdrqeQ+jDO1ZIzsx6jgLtk=
+golang.org/x/text v0.21.0 h1:zyQAAkrwaneQ066sspRyJaG9VNi/YJ1NfzcGB3hZ/qo=
+golang.org/x/text v0.21.0/go.mod h1:4IBbMaMmOPCJ8SecivzSH54+73PCFmPWxNTLm+vZkEQ=

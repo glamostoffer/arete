@@ -3,6 +3,7 @@ package http
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/glamostoffer/arete/auth/internal/service/dto"
@@ -73,13 +74,16 @@ func (h *handler) SignIn(c *gin.Context) {
 }
 
 func (h *handler) VerifyCredentials(c *gin.Context) {
-	var req dto.VerifyCredentialsRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	accessToken := c.GetHeader("X-Access-Token")
+	log.Printf("accessToken: %+v", accessToken)
+	if accessToken == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-Access-Token header"})
 		return
 	}
 
-	res, err := h.service.VerifyCredentials(c.Request.Context(), req)
+	res, err := h.service.VerifyCredentials(c.Request.Context(), dto.VerifyCredentialsRequest{
+		AccessToken: accessToken,
+	})
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return
@@ -107,13 +111,21 @@ func (h *handler) RefreshSession(c *gin.Context) {
 }
 
 func (h *handler) GetUserInfo(c *gin.Context) {
-	var req dto.GetUserInfoRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	headerUserID := c.GetHeader("X-User-ID")
+	if headerUserID == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-User-ID header"})
 		return
 	}
 
-	res, err := h.service.GetUserInfo(c.Request.Context(), req)
+	userID, err := strconv.Atoi(headerUserID)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-User-ID header"})
+		return
+	}
+
+	res, err := h.service.GetUserInfo(c.Request.Context(), dto.GetUserInfoRequest{
+		UserID: int64(userID),
+	})
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return

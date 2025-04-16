@@ -34,7 +34,7 @@ type SignInResponse struct {
 }
 
 type GetUserInfoRequest struct {
-	UserID int64 `json:"userID"`
+	UserID int64 `json:"userID" uri:"id"`
 }
 type GetUserInfoResponse struct {
 	domain.User
