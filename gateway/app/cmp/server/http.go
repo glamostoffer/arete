@@ -72,27 +72,9 @@ func (s *HTTPServer) setupRoutes() {
 		})
 	}
 
-	api := s.eng.Group("/api/v1/auth")
-	{
-		signUp := api.Group("/sign-up")
-		{
-			signUp.POST("/start", s.handler.StartSignUp)
-			signUp.POST("/finalize", s.handler.ConfirmEmail)
-		}
-		signIn := api.Group("/sign-in")
-		{
-			signIn.POST("", s.handler.SignIn)
-		}
-		session := api.Group("session")
-		{
-			session.POST("/verify", s.handler.VerifyCredentials)
-			session.POST("/refresh", s.handler.RefreshSession)
-		}
-		user := api.Group("/user")
-		{
-			user.GET("", s.handler.GetUserInfo)
-		}
-	}
+	s.handler.SetupRoutes(s.eng)
+
+	return
 }
 
 func (s *HTTPServer) Stop(ctx context.Context) error {

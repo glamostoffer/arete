@@ -1,22 +1,34 @@
 package http
 
 import (
-	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/glamostoffer/arete/auth/internal/service/dto"
+
 	"github.com/glamostoffer/arete/auth/pkg/errlist"
+	"github.com/glamostoffer/arete/gateway/internal/service/dto"
 )
 
-type handler struct {
-	service service
-}
-
-func New(service service) *handler {
-	return &handler{
-		service: service,
+func (h *handler) SetupAuthRoutes(e *gin.Engine) {
+	api := e.Group("/api/v1/auth")
+	{
+		signUp := api.Group("/sign-up")
+		{
+			signUp.POST("/start", h.StartSignUp)
+			signUp.POST("/finalize", h.ConfirmEmail)
+		}
+		signIn := api.Group("/sign-in")
+		{
+			signIn.POST("", h.SignIn)
+		}
+		session := api.Group("session")
+		{
+			session.POST("/refresh", h.RefreshSession)
+		}
+		user := api.Group("/user")
+		{
+			user.GET("", h.VerifyCredentials, h.GetUserInfo)
+		}
 	}
 }
 
@@ -26,8 +38,6 @@ func (h *handler) StartSignUp(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	log.Printf("%+v", req)
 
 	res, err := h.service.StartSignUp(c.Request.Context(), req)
 	if err != nil {
@@ -75,7 +85,6 @@ func (h *handler) SignIn(c *gin.Context) {
 
 func (h *handler) VerifyCredentials(c *gin.Context) {
 	accessToken := c.GetHeader("X-Access-Token")
-	log.Printf("accessToken: %+v", accessToken)
 	if accessToken == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-Access-Token header"})
 		return
@@ -89,7 +98,8 @@ func (h *handler) VerifyCredentials(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.Set("userID", res.UserID) // todo make it const
+
 	return
 }
 
@@ -111,20 +121,14 @@ func (h *handler) RefreshSession(c *gin.Context) {
 }
 
 func (h *handler) GetUserInfo(c *gin.Context) {
-	headerUserID := c.GetHeader("X-User-ID")
-	if headerUserID == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-User-ID header"})
-		return
-	}
-
-	userID, err := strconv.Atoi(headerUserID)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-User-ID header"})
+	userID, exists := c.Get("userID") // todo make it const
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing userID"})
 		return
 	}
 
 	res, err := h.service.GetUserInfo(c.Request.Context(), dto.GetUserInfoRequest{
-		UserID: int64(userID),
+		UserID: userID.(int64), // todo опасно
 	})
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})

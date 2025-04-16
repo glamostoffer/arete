@@ -3,7 +3,7 @@ package http
 import (
 	"context"
 
-	"github.com/glamostoffer/arete/auth/internal/service/dto"
+	"github.com/glamostoffer/arete/gateway/internal/service/dto"
 )
 
 type service interface {

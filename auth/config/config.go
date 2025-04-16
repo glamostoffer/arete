@@ -19,7 +19,6 @@ type Config struct {
 	Postgres psqlconn.Config   `validate:"required"`
 	Redis    redis.Config      `validate:"required"`
 	GRPC     server.ConfigGRPC `validate:"required"`
-	HTTP     server.ConfigHTTP `validate:"required"`
 }
 
 const (

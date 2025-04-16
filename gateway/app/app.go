@@ -7,44 +7,29 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/glamostoffer/arete/auth/app/cmp/server"
-	"github.com/glamostoffer/arete/auth/config"
-	"github.com/glamostoffer/arete/auth/internal/cache"
-	"github.com/glamostoffer/arete/auth/internal/repository"
-	"github.com/glamostoffer/arete/auth/internal/service"
-	grpchandler "github.com/glamostoffer/arete/auth/internal/transport/grpc"
-	"github.com/glamostoffer/arete/auth/pkg/email"
+	authcli "github.com/glamostoffer/arete/auth/pkg/api/grpc"
+	"github.com/glamostoffer/arete/gateway/app/cmp/server"
+	"github.com/glamostoffer/arete/gateway/config"
+	"github.com/glamostoffer/arete/gateway/internal/service"
+	httphandler "github.com/glamostoffer/arete/gateway/internal/transport/http"
 	"github.com/glamostoffer/arete/pkg/component"
-	"github.com/glamostoffer/arete/pkg/psqlconn"
-	"github.com/glamostoffer/arete/pkg/redis"
 )
 
 func Run(ctx context.Context, cfg *config.Config) error {
-	psql := psqlconn.New(cfg.Postgres)
-	rd := redis.New(cfg.Redis)
-	sender := email.New(cfg.EmailSender)
+	authClient := authcli.New(cfg.AuthCli)
 
-	repo := repository.New(psql.DB)
-	ch := cache.New(rd.Client)
+	srv := service.New(authClient)
 
-	srv := service.New(
-		cfg.Service,
-		sender,
-		repo,
-		ch,
-	)
+	httpHandler := httphandler.New(srv)
 
-	grpcHandler := grpchandler.New(srv)
-
-	grpcServ := server.NewGRPC(
-		cfg.GRPC,
-		grpcHandler,
+	httpServ := server.NewHTTP(
+		cfg.HTTP,
+		httpHandler,
 	)
 
 	cmps := []component.Component{
-		&psql,
-		&rd,
-		&grpcServ,
+		authClient,
+		&httpServ,
 	}
 
 	var err error
