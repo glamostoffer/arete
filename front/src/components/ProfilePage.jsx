@@ -18,7 +18,7 @@ const ProfilePage = () => {
   
   const userData = {
     name: "kuro",
-    email: "kuroyuki15@gmail.com",
+    email: "kuroyuki25@gmail.com",
     registrationDate: "12 апреля 2025",
     overallProgress: 65,
     courses: [

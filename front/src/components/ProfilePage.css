@@ -69,7 +69,7 @@
   .sidebar-nav {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 0;
   }
@@ -295,6 +295,8 @@
     background-color: rgba(40, 40, 40, 0.8);
     border-radius: 3px;
     overflow: hidden;
+    margin-left: auto;
+    margin-right: 5%;
   }
   
   .course-progress-fill {
