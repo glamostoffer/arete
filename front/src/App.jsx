@@ -5,6 +5,8 @@ import RegisterPage from "./components/Auth/RegisterPage.jsx";
 import ProfilePage from "./components/Profile/ProfilePage.jsx";
 import EmailConfirmationPage from "./components/Auth/EmailConfirmationPage.jsx";
 import CoursesPage from "./components/Courses/CoursesPage.jsx";
+import QuizzesPage from "./components/Quizz/QuizzesPage.jsx";
+import TasksPage from "./components/Task/TasksPage.jsx";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/confirm-email" element={<EmailConfirmationPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/quizzes" element={<QuizzesPage />} />
+        <Route path="/Tasks" element={<TasksPage />} />
       </Routes>
     </Router>
   );
