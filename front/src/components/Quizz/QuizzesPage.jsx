@@ -188,10 +188,15 @@ const QuizzesPage = () => {
                   {quizzes[selectedCourse]?.map(quiz => (
                     <div 
                       key={quiz.id} 
-                      className={`quiz-card ${!isQuizUnlocked(quiz) ? 'locked' : ''}`}
+                      className={`quiz-card ${!isQuizUnlocked(quiz) ? 'locked' : ''} ${completedQuizzes.includes(quiz.id) ? 'completed' : ''}`}
                     >
                       <div className="quiz-content">
-                        <h3 className="quiz-title">{quiz.title}</h3>
+                        <div className="quiz-header">
+                          <h3 className="quiz-title">{quiz.title}</h3>
+                          {completedQuizzes.includes(quiz.id) && (
+                            <span className="quiz-completed-badge">✓</span>
+                          )}
+                        </div>
                         <p className="quiz-description">{quiz.description}</p>
                         {!isQuizUnlocked(quiz) && (
                           <div className="quiz-lock-message">
@@ -205,7 +210,7 @@ const QuizzesPage = () => {
                           onClick={() => isQuizUnlocked(quiz) && handleStartQuiz(quiz)}
                           disabled={!isQuizUnlocked(quiz)}
                         >
-                          Начать тест
+                          {completedQuizzes.includes(quiz.id) ? 'Повторить тест' : 'Начать тест'}
                         </button>
                       </div>
                     </div>

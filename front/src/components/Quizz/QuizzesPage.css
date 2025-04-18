@@ -114,7 +114,7 @@
   .quiz-title {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 10px;
+    flex-grow: 1;
     color: #374151;
   }
   
@@ -187,6 +187,10 @@
   
   .quiz-header {
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
   }
   
   .quiz-header h2 {
@@ -313,3 +317,14 @@
     margin-right: 10px;
   }
   
+  .quiz-completed-badge {
+    color: #10b981;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.quiz-card.completed {
+    border-left: 4px solid #10b981;
+}
