@@ -4,9 +4,9 @@
     min-height: 100vh;
     background-color: #f9fafb;
     margin: 0;
-  }
-  
-  .menu-toggle-button {
+}
+
+.menu-toggle-button {
     position: fixed;
     top: 20px;
     left: 20px;
@@ -19,39 +19,39 @@
     padding: 5px 10px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 4px;
-  }
-  
-  .tasks-main-content {
+}
+
+.tasks-main-content {
     padding: 30px;
     background-color: #f9fafb;
     overflow-y: auto;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-  }
-  
-  .tasks-header {
+}
+
+.tasks-header {
     text-align: center;
     margin-bottom: 30px;
-  }
-  
-  .tasks-header h1 {
+}
+
+.tasks-header h1 {
     font-size: 28px;
     margin-bottom: 10px;
-  }
-  
-  .tasks-header p {
+}
+
+.tasks-header p {
     color: #6b7280;
     font-size: 16px;
-  }
-  
-  .course-selector-container {
+}
+
+.course-selector-container {
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
-  }
-  
-  .course-selector {
+}
+
+.course-selector {
     padding: 10px 20px;
     border-radius: 6px;
     border: 1px solid rgba(209, 213, 219, 0.5);
@@ -59,33 +59,33 @@
     font-size: 16px;
     width: 100%;
     max-width: 400px;
-  }
-  
-  .tasks-container {
+}
+
+.tasks-container {
     margin-top: 20px;
-  }
-  
-  .tasks-title {
+}
+
+.tasks-title {
     font-size: 20px;
     margin-bottom: 20px;
     font-weight: 600;
     color: #374151;
-  }
-  
-  .tasks-title::after {
+}
+
+.tasks-title::after {
     content: '';
     display: block;
     margin-top: 10px;
     border-top: 1px solid rgba(182, 182, 182, 0.7);
-  }
-  
-  .tasks-grid {
+}
+
+.tasks-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
-  }
-  
-  .task-card {
+}
+
+.task-card {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 12px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -95,76 +95,87 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-  }
-  
-  .task-card:hover {
+    position: relative;
+}
+
+.task-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  }
-  
-  .task-card.locked {
+}
+
+.task-card.locked {
     opacity: 0.7;
     background-color: rgba(229, 231, 235, 0.5);
-  }
-  
-  .task-content {
+}
+
+.task-card.completed {
+    border-left: 4px solid #10b981;
+}
+
+.task-content {
     flex-grow: 1;
-  }
-  
-  .task-header {
+}
+
+.task-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-  }
-  
-  .task-title {
+}
+
+.task-title {
     font-size: 18px;
     font-weight: 600;
     color: #374151;
-  }
-  
-  .task-difficulty {
+}
+
+.task-difficulty {
     font-size: 14px;
     padding: 4px 10px;
     border-radius: 12px;
     font-weight: 600;
-  }
-  
-  .task-difficulty.легкая {
+}
+
+.task-difficulty.легкая {
     background-color: rgba(16, 185, 129, 0.2);
     color: #065f46;
-  }
-  
-  .task-difficulty.средняя {
+}
+
+.task-difficulty.средняя {
     background-color: rgba(245, 158, 11, 0.2);
     color: #92400e;
-  }
-  
-  .task-difficulty.продвинутый {
+}
+
+.task-difficulty.продвинутый {
     background-color: rgba(239, 68, 68, 0.2);
     color: #991b1b;
-  }
-  
-  .task-description {
+}
+
+.task-description {
     color: #6b7280;
     font-size: 18px;
     margin-bottom: 15px;
     line-height: 1.5;
-  }
-  
-  .task-lock-message {
+}
+
+.task-lock-message {
     font-size: 14px;
     color: #ef4444;
     margin-top: 10px;
     font-style: italic;
-  }
-  
-  .task-actions {
+}
+
+.task-completed-badge {
+    color: #10b981;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.task-actions {
     margin-top: 15px;
-  }
-  
-  .start-task-button {
+}
+
+.start-task-button {
     background-color: rgba(0, 172, 193, 0.8);
     color: white;
     border: none;
@@ -174,27 +185,27 @@
     font-weight: 600;
     transition: background-color 0.2s;
     width: 100%;
-  }
-  
-  .start-task-button:hover:not(.disabled) {
+}
+
+.start-task-button:hover:not(.disabled) {
     background-color: rgba(0, 151, 167, 0.8);
-  }
-  
-  .start-task-button.disabled {
+}
+
+.start-task-button.disabled {
     background-color: rgba(156, 163, 175, 0.5);
     cursor: not-allowed;
-  }
-  
-  .task-solution-container {
+}
+
+.task-solution-container {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 12px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 30px;
-  }
-  
-  .back-button {
+}
+
+.back-button {
     background: none;
     border: none;
     color: #00acc1;
@@ -204,82 +215,99 @@
     padding: 5px 10px;
     border-radius: 4px;
     transition: background-color 0.2s;
-  }
-  
-  .back-button:hover {
+}
+
+.back-button:hover {
     background-color: rgba(0, 172, 193, 0.1);
-  }
-  
-  .task-details {
+}
+
+.task-details {
     margin-bottom: 30px;
-  }
-  
-  .task-details .task-title {
+}
+
+.task-details .task-title {
     font-size: 24px;
     margin-bottom: 5px;
-  }
-  
-  .task-details .task-difficulty {
+}
+
+.task-details .task-difficulty {
     display: inline-block;
     margin-bottom: 15px;
-  }
-  
-  .task-description {
+}
+
+.task-description {
     margin-bottom: 20px;
     line-height: 1.6;
-  }
-  
-  .test-cases {
+}
+
+.test-cases {
     background-color: rgba(240, 240, 240, 0.95);
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid rgba(209, 213, 219, 0.3);
-  }
-  
-  .test-cases h3 {
+}
+
+.test-cases h3 {
     margin-bottom: 10px;
     font-size: 18px;
-  }
-  
-  .test-case {
+}
+
+.test-case {
     margin-bottom: 12px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgba(209, 213, 219, 0.7);
-  }
-  
-  .test-case:last-child {
+}
+
+.test-case:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
-  }
-  
-  .explanation {
+}
+
+.explanation {
     background-color: rgba(240, 240, 240, 0.95);
     border-radius: 8px;
     padding: 15px;
     border: 1px solid rgba(209, 213, 219, 0.3); 
-  }
-  
-  .explanation h3 {
+}
+
+.explanation h3 {
     margin-bottom: 10px;
     font-size: 18px;
-  }
-  
-  .code-editor-container {
+}
+
+.code-editor-container {
     margin-top: 30px;
     padding: 0 1%;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .code-editor-container h3 {
+}
+
+.language-selector-container {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.language-selector-container label {
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.language-selector-container select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+.code-editor-container h3 {
     margin-bottom: 10px;
     font-size: 18px;
-  }
-  
-  .code-editor {
+}
+
+.code-editor {
     width: 100%;
     height: 300px;
     font-family: 'Courier New', Courier, monospace;
@@ -291,15 +319,15 @@
     resize: none;
     margin-bottom: 15px;
     line-height: 1.5;
-  }
-  
-  .editor-actions {
+}
+
+.editor-actions {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
-  }
-  
-  .run-button, .submit-button {
+}
+
+.run-button, .submit-button {
     padding: 12px 24px;
     border-radius: 6px;
     font-size: 16px;
@@ -307,47 +335,70 @@
     cursor: pointer;
     transition: background-color 0.2s;
     border: none;
-  }
-  
-  .run-button {
+}
+
+.run-button {
     background-color: rgba(0, 172, 193, 0.8);
     color: white;
-  }
-  
-  .run-button:hover:not(:disabled) {
+}
+
+.run-button:hover:not(:disabled) {
     background-color: rgba(0, 151, 167, 0.8);
-  }
-  
-  .submit-button {
+}
+
+.submit-button {
     background-color: #10b981;
     color: white;
-  }
-  
-  .submit-button:hover:not(:disabled) {
+}
+
+.submit-button:hover:not(:disabled) {
     background-color: #0d9e6e;
-  }
-  
-  .run-button:disabled, .submit-button:disabled {
+}
+
+.run-button:disabled, .submit-button:disabled {
     background-color: rgba(156, 163, 175, 0.5);
     cursor: not-allowed;
-  }
-  
-  .output-container {
+}
+
+.output-container {
     background-color: rgba(17, 24, 39, 0.9);
     border-radius: 8px;
     padding: 15px;
     color: #f3f4f6;
     font-family: 'Courier New', Courier, monospace;
-  }
-  
-  .output-container h3 {
+}
+
+.output-container h3 {
     margin-bottom: 10px;
     font-size: 18px;
     color: white;
-  }
-  
-  .output {
+}
+
+.output {
     white-space: pre-wrap;
     margin: 0;
     line-height: 1.5;
-  }
+}
+
+.test-results-container {
+    margin-top: 15px;
+}
+
+.test-result {
+    margin-bottom: 15px;
+}
+
+.test-divider {
+    color: #6b7280;
+    margin: 10px 0;
+}
+
+.test-passed {
+    color: #10b981;
+    font-weight: bold;
+}
+
+.test-failed {
+    color: #ef4444;
+    font-weight: bold;
+}
