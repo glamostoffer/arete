@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./components/LoginPage.jsx";
-import RegisterPage from "./components/RegisterPage.jsx";
-import ProfilePage from "./components/ProfilePage.jsx";
+import LoginPage from "./components/Auth/LoginPage.jsx";
+import RegisterPage from "./components/Auth/RegisterPage.jsx";
+import ProfilePage from "./components/Profile/ProfilePage.jsx";
+import EmailConfirmationPage from "./components/Auth/EmailConfirmationPage.jsx";
+import CoursesPage from "./components/Courses/CoursesPage.jsx";
 
 const App = () => {
   return (
@@ -12,6 +14,8 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/confirm-email" element={<EmailConfirmationPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
       </Routes>
     </Router>
   );

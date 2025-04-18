@@ -1,0 +1,351 @@
+/* Основной макет */
+.profile-layout {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  margin: 0;
+}
+
+.menu-toggle-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+}
+
+.main-content {
+  padding: 30px;
+  background-color: #f9fafb;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Левая колонка */
+.profile-sidebar {
+  flex: 0 0 280px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.profile-avatar svg {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.profile-info {
+  height: 100%;
+  flex-grow: 1;
+}
+
+.profile-info-item {
+  margin-bottom: 15px;
+}
+
+.profile-info-label {
+  font-weight: bold;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.profile-info-value {
+  font-size: 18px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Правая колонка */
+.profile-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.top-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.top-row > * {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Тест дня */
+.test-of-the-day {
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.test-of-the-day h2 {
+  font-size: 28px;
+  margin-bottom: 18px;
+  font-weight: 600;
+  color: #374151;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.test-description {
+  margin-bottom: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 18px;
+  color: #6b7280;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.start-test-button {
+  background-color: rgba(0, 172, 193, 0.8);
+  color: white;
+  border: none;
+  padding: 16px 28px;
+  font-size: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  backdrop-filter: blur(5px);
+}
+
+.start-test-button:hover {
+  background-color: rgba(0, 151, 167, 0.8);
+}
+
+/* Мои курсы */
+.courses-container {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.courses-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.courses-title::after {
+  content: '';
+  display: block;
+  margin-top: 10px;
+  border-top: 1px solid rgba(182, 182, 182, 0.7);
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  flex-wrap: wrap;
+}
+
+.course-item:last-child {
+  border-bottom: none;
+}
+
+.course-name {
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 20px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.course-rating {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.course-progress-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 20px;
+  min-width: 250px;
+}
+
+.course-progress {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(229, 231, 235, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.course-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #00bcd4, #ffa726);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.course-progress-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* Рейтинг и топ */
+.rating-container {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.rating-values {
+  margin-bottom: 20px;
+}
+
+.rating-item {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.rating-label {
+  font-weight: bold;
+  color: #374151;
+  margin-right: 5px;
+}
+
+.rating-value {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.rating-container::after {
+  content: '';
+  display: block;
+  margin-top: 15px;
+  border-top: 1px solid rgba(182, 182, 182, 0.7);
+}
+
+/* Топ-5 пользователей */
+.top-users {
+  margin-top: 20px;
+}
+
+.top-users h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.top-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.top-user-avatar svg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.top-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-user-name {
+  font-weight: 500;
+}
+
+.top-user-rating {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.delete-account-button-wrapper {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.delete-account-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.delete-account-button:hover {
+  background-color: #dc2626;
+}

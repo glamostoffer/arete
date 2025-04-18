@@ -1,0 +1,158 @@
+.courses-layout {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f9fafb;
+    margin: 0;
+  }
+  
+  .courses-main-content {
+    padding: 30px;
+    background-color: #f9fafb;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .courses-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .courses-header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .courses-header p {
+    color: #6b7280;
+    font-size: 16px;
+  }
+  
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+  
+  .course-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .course-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  }
+  
+  .course-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  
+  .course-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #374151;
+  }
+  
+  .course-description {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  
+  .course-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 14px;
+    align-items: flex-end;
+  }
+  
+  .course-duration, .course-difficulty {
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+  }
+  
+  .course-duration svg, .course-difficulty svg {
+    margin-right: 5px;
+  }
+  
+  .course-actions {
+    margin-top: auto;
+  }
+  
+  .enroll-button {
+    background-color: rgba(0, 172, 193, 0.8);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    width: 100%;
+  }
+  
+  .enroll-button:hover {
+    background-color: rgba(0, 151, 167, 0.8);
+  }
+  
+  .enroll-button.enrolled {
+    background-color: #10b981;
+  }
+  
+  .enroll-button.enrolled:hover {
+    background-color: #0d9e6e;
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-button {
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(209, 213, 219, 0.5);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .filter-button:hover {
+    background-color: rgba(0, 172, 193, 0.1);
+    border-color: rgba(0, 172, 193, 0.3);
+  }
+  
+  .filter-button.active {
+    background-color: rgba(0, 172, 193, 0.8);
+    color: white;
+    border-color: rgba(0, 172, 193, 0.8);
+  }

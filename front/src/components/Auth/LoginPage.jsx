@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const isFormValid = username && password;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isFormValid) return;
+
+    // TODO: Реальный логин
+    console.log('Вход:', { username, password });
+  };
+
   return (
     <div className="page-background">
       <div className="light-orb"></div>
@@ -14,7 +26,7 @@ const LoginPage = () => {
         <div className="login-content">
           <h1 className="login-title">Войдите в ваш аккаунт</h1>
           
-          <form className="login-form">
+          <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="username" className="form-label">Почта или логин</label>
               <input 
@@ -22,6 +34,8 @@ const LoginPage = () => {
                 id="username" 
                 className="form-input" 
                 placeholder="Введите почту или имя пользователя" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             
@@ -32,10 +46,18 @@ const LoginPage = () => {
                 id="password" 
                 className="form-input" 
                 placeholder="Введите ваш пароль" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             
-            <button type="submit" className="login-button">Войти</button>
+            <button
+              type="submit"
+              className={`login-button ${!isFormValid ? 'login-button-disabled' : ''}`}
+              disabled={!isFormValid}
+            >
+              Войти
+            </button>
           </form>
           
           <div className="login-links">
