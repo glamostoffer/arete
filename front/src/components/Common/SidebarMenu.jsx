@@ -17,6 +17,10 @@ const SidebarMenu = ({ isOpen, onClose }) => {
             <span className="nav-icon">{'</>'}</span>
             <span className="nav-text">Курсы</span>
           </Link>
+          <Link to="/theory" className="nav-item">
+            <span className="nav-icon">{'[]'}</span>
+            <span className="nav-text">Теория</span>
+          </Link>
           <Link to="/tasks" className="nav-item">
             <span className="nav-icon">{'{}'}</span>
             <span className="nav-text">Задачи</span>

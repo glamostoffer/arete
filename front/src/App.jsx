@@ -7,6 +7,7 @@ import EmailConfirmationPage from "./components/Auth/EmailConfirmationPage.jsx";
 import CoursesPage from "./components/Courses/CoursesPage.jsx";
 import QuizzesPage from "./components/Quizz/QuizzesPage.jsx";
 import TasksPage from "./components/Task/TasksPage.jsx";
+import TheoryPage from "./components/Theory/TheoryPage.jsx";
 
 const App = () => {
   return (
@@ -19,7 +20,8 @@ const App = () => {
         <Route path="/confirm-email" element={<EmailConfirmationPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/quizzes" element={<QuizzesPage />} />
-        <Route path="/Tasks" element={<TasksPage />} />
+        <Route path="/tasks" element={<TasksPage />} />
+        <Route path="/theory" element={<TheoryPage />} />
       </Routes>
     </Router>
   );
