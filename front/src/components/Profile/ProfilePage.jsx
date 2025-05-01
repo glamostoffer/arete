@@ -20,11 +20,10 @@ const ProfilePage = () => {
     name: "glamostoffer",
     email: "glamostoffer@gmail.com",
     registrationDate: "12 апреля 2025",
-    globalRating: 1245,
+    globalRating: 6,
     courses: [
-      { id: 1, name: "Основы Python", progress: 80 },
-      { id: 2, name: "Веб-разработка", progress: 45 },
-      { id: 3, name: "Алгоритмы и структуры данных", progress: 30 },
+      { id: 1, name: "Основы Python", progress: 25 },
+      { id: 3, name: "Алгоритмы и структуры данных", progress: 0 },
     ],
     courseRatings: {
       1: 512,
@@ -40,11 +39,11 @@ const ProfilePage = () => {
   };
 
   const topUsers = [
-    { name: "Neo", rating: 1560 },
-    { name: "Trinity", rating: 1495 },
-    { name: "Morpheus", rating: 1430 },
-    { name: "Smith", rating: 1395 },
-    { name: "Oracle", rating: 1350 },
+    { name: "test", rating: 30 },
+    { name: "b2", rating: 25 },
+    { name: "c3", rating: 20 },
+    { name: "d4", rating: 15 },
+    { name: "e5", rating: 10 },
   ];
 
   return (
