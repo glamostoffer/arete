@@ -6,13 +6,15 @@ import (
 
 	authcli "github.com/glamostoffer/arete/auth/pkg/api/grpc"
 	"github.com/glamostoffer/arete/gateway/app/cmp/server"
+	learningcli "github.com/glamostoffer/arete/learning/pkg/api/grpc"
 	"github.com/go-playground/validator"
 )
 
 type Config struct {
 	HTTP server.ConfigHTTP `validate:"required"`
 
-	AuthCli authcli.Config
+	AuthCli     authcli.Config
+	LearningCli learningcli.Config
 }
 
 const (

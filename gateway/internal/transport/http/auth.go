@@ -39,7 +39,7 @@ func (h *handler) StartSignUp(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.StartSignUp(c.Request.Context(), req)
+	res, err := h.auth.StartSignUp(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return
@@ -56,7 +56,7 @@ func (h *handler) ConfirmEmail(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.ConfirmEmail(c.Request.Context(), req)
+	res, err := h.auth.ConfirmEmail(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return
@@ -73,7 +73,7 @@ func (h *handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.SignIn(c.Request.Context(), req)
+	res, err := h.auth.SignIn(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return
@@ -90,7 +90,7 @@ func (h *handler) VerifyCredentials(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.VerifyCredentials(c.Request.Context(), dto.VerifyCredentialsRequest{
+	res, err := h.auth.VerifyCredentials(c.Request.Context(), dto.VerifyCredentialsRequest{
 		AccessToken: accessToken,
 	})
 	if err != nil {
@@ -110,7 +110,7 @@ func (h *handler) RefreshSession(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.RefreshSession(c.Request.Context(), req)
+	res, err := h.auth.RefreshSession(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
 		return
@@ -127,7 +127,7 @@ func (h *handler) GetUserInfo(c *gin.Context) {
 		return
 	}
 
-	res, err := h.service.GetUserInfo(c.Request.Context(), dto.GetUserInfoRequest{
+	res, err := h.auth.GetUserInfo(c.Request.Context(), dto.GetUserInfoRequest{
 		UserID: userID.(int64), // todo опасно
 	})
 	if err != nil {

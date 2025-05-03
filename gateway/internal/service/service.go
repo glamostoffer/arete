@@ -1,15 +1,18 @@
 package service
 
 import (
-	v1 "github.com/glamostoffer/arete/auth/pkg/api/grpc/v1"
+	auth "github.com/glamostoffer/arete/auth/pkg/api/grpc/v1"
+	learning "github.com/glamostoffer/arete/learning/pkg/api/grpc/v1"
 )
 
 type service struct {
-	auth v1.AuthClient
+	auth     auth.AuthClient
+	learning learning.LearningClient
 }
 
-func New(auth v1.AuthClient) *service {
+func New(auth auth.AuthClient, learning learning.LearningClient) *service {
 	return &service{
-		auth: auth,
+		auth:     auth,
+		learning: learning,
 	}
 }

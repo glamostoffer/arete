@@ -12,15 +12,17 @@ import (
 	"github.com/glamostoffer/arete/gateway/config"
 	"github.com/glamostoffer/arete/gateway/internal/service"
 	httphandler "github.com/glamostoffer/arete/gateway/internal/transport/http"
+	learningcli "github.com/glamostoffer/arete/learning/pkg/api/grpc"
 	"github.com/glamostoffer/arete/pkg/component"
 )
 
 func Run(ctx context.Context, cfg *config.Config) error {
 	authClient := authcli.New(cfg.AuthCli)
+	learningClient := learningcli.New(cfg.LearningCli)
 
-	srv := service.New(authClient)
+	srv := service.New(authClient, learningClient)
 
-	httpHandler := httphandler.New(srv)
+	httpHandler := httphandler.New(srv, srv)
 
 	httpServ := server.NewHTTP(
 		cfg.HTTP,
@@ -29,6 +31,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 
 	cmps := []component.Component{
 		authClient,
+		learningClient,
 		&httpServ,
 	}
 

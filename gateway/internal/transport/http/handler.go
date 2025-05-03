@@ -3,17 +3,20 @@ package http
 import "github.com/gin-gonic/gin"
 
 type handler struct {
-	service service
+	auth     auth
+	learning learning
 }
 
-func New(service service) *handler {
+func New(auth auth, learning learning) *handler {
 	return &handler{
-		service,
+		auth:     auth,
+		learning: learning,
 	}
 }
 
 func (h *handler) SetupRoutes(e *gin.Engine) {
 	h.SetupAuthRoutes(e)
+	h.SetupLearningRoutes(e)
 
 	return
 }
