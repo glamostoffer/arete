@@ -23,48 +23,48 @@ const CoursesPage = () => {
   const courses = [
     {
       id: 1,
-      title: 'Основы Python',
-      description: 'Изучите основы программирования на Python: синтаксис, структуры данных и основные алгоритмы.',
-      duration: '4 недели',
-      difficulty: 'Начинающий',
-      image: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+      title: 'Программирование на Go (Golang)',
+      description: 'Изучите язык программирования Go: многопоточность, эффективность и простота синтаксиса.',
+      duration: '6 недель',
+      difficulty: 'Средний',
+      image: 'https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
       category: 'programming'
     },
     {
       id: 2,
-      title: 'Веб-разработка',
-      description: 'Полный курс по современной веб-разработке: HTML, CSS, JavaScript и фреймворки.',
-      duration: '8 недель',
+      title: 'Разработка на C#',
+      description: 'Полный курс по C#: от основ до продвинутых концепций, включая .NET и разработку приложений.',
+      duration: '7 недель',
       difficulty: 'Средний',
-      image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-      category: 'web'
+      image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+      category: 'programming'
     },
     {
       id: 3,
+      title: 'Go для веб-разработки',
+      description: 'Создание высоконагруженных веб-приложений с использованием Golang и современных фреймворков.',
+      duration: '5 недель',
+      difficulty: 'Продвинутый',
+      image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+      category: 'web'
+    },
+    {
+      id: 4,
+      title: 'C# и Unity для разработки игр',
+      description: 'Основы разработки игр на Unity с использованием языка программирования C#.',
+      duration: '8 недель',
+      difficulty: 'Средний',
+      image: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+      category: 'gamedev'
+    },
+    {
+      id: 5,
       title: 'Алгоритмы и структуры данных',
       description: 'Углубленное изучение алгоритмов и структур данных для подготовки к техническим собеседованиям.',
       duration: '6 недель',
       difficulty: 'Продвинутый',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
       category: 'algorithms'
-    },
-    {
-      id: 4,
-      title: 'Машинное обучение',
-      description: 'Введение в машинное обучение: от линейной регрессии до нейронных сетей.',
-      duration: '10 недель',
-      difficulty: 'Продвинутый',
-      image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-      category: 'ai'
-    },
-    {
-      id: 5,
-      title: 'Мобильная разработка',
-      description: 'Создание мобильных приложений для iOS и Android с использованием современных технологий.',
-      duration: '8 недель',
-      difficulty: 'Средний',
-      image: 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
-      category: 'mobile'
     },
     {
       id: 6,
@@ -74,7 +74,16 @@ const CoursesPage = () => {
       difficulty: 'Средний',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
       category: 'databases'
-    }
+    },
+    {
+      id: 7,
+      title: 'Мобильная разработка',
+      description: 'Создание мобильных приложений для iOS и Android с использованием современных технологий.',
+      duration: '8 недель',
+      difficulty: 'Средний',
+      image: 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80',
+      category: 'mobile'
+    },
   ];
 
   const filters = [
@@ -82,7 +91,8 @@ const CoursesPage = () => {
     { id: 'programming', name: 'Программирование' },
     { id: 'web', name: 'Веб-разработка' },
     { id: 'algorithms', name: 'Алгоритмы' },
-    { id: 'ai', name: 'Искусственный интеллект' },
+    { id: 'gamedev', name: 'Разработка игр' },
+    { id: 'databases', name: 'Базы данных' },
     { id: 'mobile', name: 'Мобильная разработка' }
   ];
 

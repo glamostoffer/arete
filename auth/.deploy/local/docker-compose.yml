@@ -1,7 +1,9 @@
+# docker-compose -p auth_service up --build
 version: '3.8'
 
 services:
   redis:
+    container_name: auth_service_redis
     image: redis:alpine
     ports:
       - "6379:6379"
@@ -10,6 +12,7 @@ services:
     restart: unless-stopped
 
   postgres:
+    container_name: auth_service_postgres
     image: postgres:13-alpine
     environment:
       POSTGRES_USER: root
