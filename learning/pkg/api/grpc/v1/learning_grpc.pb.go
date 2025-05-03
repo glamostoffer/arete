@@ -21,9 +21,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Learning_GetCoursesList_FullMethodName   = "/learning.v1.Learning/GetCoursesList"
-	Learning_GetCourseLessons_FullMethodName = "/learning.v1.Learning/GetCourseLessons"
-	Learning_GetLessonDetails_FullMethodName = "/learning.v1.Learning/GetLessonDetails"
+	Learning_GetCoursesList_FullMethodName      = "/learning.v1.Learning/GetCoursesList"
+	Learning_GetCourseCategories_FullMethodName = "/learning.v1.Learning/GetCourseCategories"
+	Learning_GetCourseLessons_FullMethodName    = "/learning.v1.Learning/GetCourseLessons"
+	Learning_GetLessonDetails_FullMethodName    = "/learning.v1.Learning/GetLessonDetails"
 )
 
 // LearningClient is the client API for Learning service.
@@ -32,6 +33,7 @@ const (
 type LearningClient interface {
 	// Курсы
 	GetCoursesList(ctx context.Context, in *GetCoursesListRequest, opts ...grpc.CallOption) (*GetCoursesListResponse, error)
+	GetCourseCategories(ctx context.Context, in *GetCourseCategoriesRequest, opts ...grpc.CallOption) (*GetCourseCategoriesResponse, error)
 	// Уроки
 	GetCourseLessons(ctx context.Context, in *GetCourseLessonsRequest, opts ...grpc.CallOption) (*GetCourseLessonsResponse, error)
 	GetLessonDetails(ctx context.Context, in *GetLessonDetailsRequest, opts ...grpc.CallOption) (*GetLessonDetailsResponse, error)
@@ -49,6 +51,16 @@ func (c *learningClient) GetCoursesList(ctx context.Context, in *GetCoursesListR
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCoursesListResponse)
 	err := c.cc.Invoke(ctx, Learning_GetCoursesList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *learningClient) GetCourseCategories(ctx context.Context, in *GetCourseCategoriesRequest, opts ...grpc.CallOption) (*GetCourseCategoriesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCourseCategoriesResponse)
+	err := c.cc.Invoke(ctx, Learning_GetCourseCategories_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,6 +93,7 @@ func (c *learningClient) GetLessonDetails(ctx context.Context, in *GetLessonDeta
 type LearningServer interface {
 	// Курсы
 	GetCoursesList(context.Context, *GetCoursesListRequest) (*GetCoursesListResponse, error)
+	GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error)
 	// Уроки
 	GetCourseLessons(context.Context, *GetCourseLessonsRequest) (*GetCourseLessonsResponse, error)
 	GetLessonDetails(context.Context, *GetLessonDetailsRequest) (*GetLessonDetailsResponse, error)
@@ -96,6 +109,9 @@ type UnimplementedLearningServer struct{}
 
 func (UnimplementedLearningServer) GetCoursesList(context.Context, *GetCoursesListRequest) (*GetCoursesListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCoursesList not implemented")
+}
+func (UnimplementedLearningServer) GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCourseCategories not implemented")
 }
 func (UnimplementedLearningServer) GetCourseLessons(context.Context, *GetCourseLessonsRequest) (*GetCourseLessonsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourseLessons not implemented")
@@ -138,6 +154,24 @@ func _Learning_GetCoursesList_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LearningServer).GetCoursesList(ctx, req.(*GetCoursesListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Learning_GetCourseCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCourseCategoriesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LearningServer).GetCourseCategories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Learning_GetCourseCategories_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LearningServer).GetCourseCategories(ctx, req.(*GetCourseCategoriesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -188,6 +222,10 @@ var Learning_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCoursesList",
 			Handler:    _Learning_GetCoursesList_Handler,
+		},
+		{
+			MethodName: "GetCourseCategories",
+			Handler:    _Learning_GetCourseCategories_Handler,
 		},
 		{
 			MethodName: "GetCourseLessons",
