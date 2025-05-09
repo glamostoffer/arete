@@ -53,3 +53,33 @@ type EnrollToCourseRequest struct {
 }
 type EnrollToCourseResponse struct {
 }
+
+type GetUserCoursesRequest struct {
+	UserID int64
+}
+type GetUserCoursesResponse struct {
+	Courses []domain.Course
+}
+
+func (r *GetUserCoursesResponse) ToProto() *v1.GetUserCoursesResponse {
+	pbCoursesList := make([]*v1.Course, 0, len(r.Courses))
+
+	for _, course := range r.Courses {
+		pbCourse := &v1.Course{
+			Id:          course.ID,
+			Title:       course.Title,
+			Description: course.Description,
+			Duration:    course.Duration,
+			Difficulty:  course.Difficulty,
+			Category:    course.Category,
+			ImageURL:    course.ImageURL,
+			IsEnrolled:  course.IsEnrolled,
+		}
+
+		pbCoursesList = append(pbCoursesList, pbCourse)
+	}
+
+	return &v1.GetUserCoursesResponse{
+		Courses: pbCoursesList,
+	}
+}

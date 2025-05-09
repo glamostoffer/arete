@@ -38,3 +38,13 @@ func (s *service) EnrollToCourse(ctx context.Context, req dto.EnrollToCourseRequ
 
 	return res, nil
 }
+
+func (s *service) GetUserCourses(ctx context.Context, req dto.GetUserCoursesRequest) (res dto.GetUserCoursesResponse, err error) {
+	courses, err := s.repo.GetUserCourses(ctx, req.UserID)
+	if err != nil {
+		return res, err
+	}
+
+	res.Courses = courses
+	return res, nil
+}

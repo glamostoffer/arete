@@ -8,6 +8,7 @@ option go_package = "api/learning/v1;v1";
 service Learning {
     // Курсы
     rpc GetCoursesList(GetCoursesListRequest) returns (GetCoursesListResponse);
+    rpc GetUserCourses(GetUserCoursesRequest) returns (GetUserCoursesResponse);
     rpc GetCourseCategories(GetCourseCategoriesRequest) returns (GetCourseCategoriesResponse);
     rpc EnrollToCourse(EnrollToCourseRequest) returns (EnrollToCourseResponse);
     // Уроки
@@ -44,6 +45,13 @@ message GetCoursesListRequest {
 message GetCoursesListResponse {
     repeated Course courses = 1;
     bool hasNext = 2;
+}
+
+message GetUserCoursesRequest {
+    int64 userID = 1;
+}
+message GetUserCoursesResponse {
+    repeated Course courses = 1;
 }
 
 message GetCourseCategoriesRequest {

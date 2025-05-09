@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Learning_GetCoursesList_FullMethodName      = "/learning.v1.Learning/GetCoursesList"
+	Learning_GetUserCourses_FullMethodName      = "/learning.v1.Learning/GetUserCourses"
 	Learning_GetCourseCategories_FullMethodName = "/learning.v1.Learning/GetCourseCategories"
 	Learning_EnrollToCourse_FullMethodName      = "/learning.v1.Learning/EnrollToCourse"
 	Learning_GetCourseLessons_FullMethodName    = "/learning.v1.Learning/GetCourseLessons"
@@ -34,6 +35,7 @@ const (
 type LearningClient interface {
 	// Курсы
 	GetCoursesList(ctx context.Context, in *GetCoursesListRequest, opts ...grpc.CallOption) (*GetCoursesListResponse, error)
+	GetUserCourses(ctx context.Context, in *GetUserCoursesRequest, opts ...grpc.CallOption) (*GetUserCoursesResponse, error)
 	GetCourseCategories(ctx context.Context, in *GetCourseCategoriesRequest, opts ...grpc.CallOption) (*GetCourseCategoriesResponse, error)
 	EnrollToCourse(ctx context.Context, in *EnrollToCourseRequest, opts ...grpc.CallOption) (*EnrollToCourseResponse, error)
 	// Уроки
@@ -53,6 +55,16 @@ func (c *learningClient) GetCoursesList(ctx context.Context, in *GetCoursesListR
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCoursesListResponse)
 	err := c.cc.Invoke(ctx, Learning_GetCoursesList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *learningClient) GetUserCourses(ctx context.Context, in *GetUserCoursesRequest, opts ...grpc.CallOption) (*GetUserCoursesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserCoursesResponse)
+	err := c.cc.Invoke(ctx, Learning_GetUserCourses_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -105,6 +117,7 @@ func (c *learningClient) GetLessonDetails(ctx context.Context, in *GetLessonDeta
 type LearningServer interface {
 	// Курсы
 	GetCoursesList(context.Context, *GetCoursesListRequest) (*GetCoursesListResponse, error)
+	GetUserCourses(context.Context, *GetUserCoursesRequest) (*GetUserCoursesResponse, error)
 	GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error)
 	EnrollToCourse(context.Context, *EnrollToCourseRequest) (*EnrollToCourseResponse, error)
 	// Уроки
@@ -122,6 +135,9 @@ type UnimplementedLearningServer struct{}
 
 func (UnimplementedLearningServer) GetCoursesList(context.Context, *GetCoursesListRequest) (*GetCoursesListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCoursesList not implemented")
+}
+func (UnimplementedLearningServer) GetUserCourses(context.Context, *GetUserCoursesRequest) (*GetUserCoursesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCourses not implemented")
 }
 func (UnimplementedLearningServer) GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourseCategories not implemented")
@@ -170,6 +186,24 @@ func _Learning_GetCoursesList_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LearningServer).GetCoursesList(ctx, req.(*GetCoursesListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Learning_GetUserCourses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCoursesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LearningServer).GetUserCourses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Learning_GetUserCourses_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LearningServer).GetUserCourses(ctx, req.(*GetUserCoursesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -256,6 +290,10 @@ var Learning_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCoursesList",
 			Handler:    _Learning_GetCoursesList_Handler,
+		},
+		{
+			MethodName: "GetUserCourses",
+			Handler:    _Learning_GetUserCourses_Handler,
 		},
 		{
 			MethodName: "GetCourseCategories",

@@ -49,3 +49,14 @@ func (h *handler) EnrollToCourse(ctx context.Context, req *v1.EnrollToCourseRequ
 
 	return res, nil
 }
+
+func (h *handler) GetUserCourses(ctx context.Context, req *v1.GetUserCoursesRequest) (res *v1.GetUserCoursesResponse, err error) {
+	out, err := h.service.GetUserCourses(ctx, dto.GetUserCoursesRequest{
+		UserID: req.GetUserID(),
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return out.ToProto(), nil
+}

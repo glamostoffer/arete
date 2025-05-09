@@ -60,3 +60,17 @@ func (r *repository) EnrollUserToCourse(ctx context.Context, userID, courseID in
 
 	return nil
 }
+
+func (r *repository) GetUserCourses(ctx context.Context, userID int64) (courses []domain.Course, err error) {
+	err = r.db.SelectContext(
+		ctx,
+		&courses,
+		queryGetUserCourses,
+		userID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return courses, nil
+}

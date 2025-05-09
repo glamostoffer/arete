@@ -37,6 +37,23 @@ const (
 		$1, $2 
 	);
 	`
+
+	queryGetUserCourses = `
+	select
+		c.id,
+		c.title,
+		c.description,
+		c.duration,
+		c.difficulty,
+		cc.name as category,
+		c.image_url,
+		case when uc.user_id is not null then true else false end as is_enrolled
+	from
+		public.course c
+		join public.user_course uc on c.id = uc.course_id and uc.user_id = $1
+		left join public.course_category cc on c.category_id = cc.id
+	order by c.id;
+	`
 )
 
 const (
