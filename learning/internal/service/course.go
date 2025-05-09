@@ -29,3 +29,12 @@ func (s *service) GetCourseCategories(ctx context.Context, req dto.GetCourseCate
 	res.Categories = categories
 	return res, nil
 }
+
+func (s *service) EnrollToCourse(ctx context.Context, req dto.EnrollToCourseRequest) (res dto.EnrollToCourseResponse, err error) {
+	err = s.repo.EnrollUserToCourse(ctx, req.UserID, req.CourseID)
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}

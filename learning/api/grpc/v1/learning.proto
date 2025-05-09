@@ -9,6 +9,7 @@ service Learning {
     // Курсы
     rpc GetCoursesList(GetCoursesListRequest) returns (GetCoursesListResponse);
     rpc GetCourseCategories(GetCourseCategoriesRequest) returns (GetCourseCategoriesResponse);
+    rpc EnrollToCourse(EnrollToCourseRequest) returns (EnrollToCourseResponse);
     // Уроки
     rpc GetCourseLessons(GetCourseLessonsRequest) returns (GetCourseLessonsResponse);
     rpc GetLessonDetails(GetLessonDetailsRequest) returns (GetLessonDetailsResponse);
@@ -50,6 +51,12 @@ message GetCourseCategoriesRequest {
 message GetCourseCategoriesResponse {
     repeated string categories = 1;
 }
+
+message EnrollToCourseRequest {
+    int64 userID = 1;
+    int64 courseID = 2;
+}
+message EnrollToCourseResponse {}
 
 message GetCourseLessonsRequest {
     int64 courseID = 1;

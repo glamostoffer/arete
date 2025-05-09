@@ -46,3 +46,10 @@ type GetCourseCategoriesRequest struct {
 type GetCourseCategoriesResponse struct {
 	Categories []string
 }
+
+type EnrollToCourseRequest struct {
+	UserID   int64
+	CourseID int64
+}
+type EnrollToCourseResponse struct {
+}

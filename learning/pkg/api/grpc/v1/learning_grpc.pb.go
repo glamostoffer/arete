@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Learning_GetCoursesList_FullMethodName      = "/learning.v1.Learning/GetCoursesList"
 	Learning_GetCourseCategories_FullMethodName = "/learning.v1.Learning/GetCourseCategories"
+	Learning_EnrollToCourse_FullMethodName      = "/learning.v1.Learning/EnrollToCourse"
 	Learning_GetCourseLessons_FullMethodName    = "/learning.v1.Learning/GetCourseLessons"
 	Learning_GetLessonDetails_FullMethodName    = "/learning.v1.Learning/GetLessonDetails"
 )
@@ -34,6 +35,7 @@ type LearningClient interface {
 	// Курсы
 	GetCoursesList(ctx context.Context, in *GetCoursesListRequest, opts ...grpc.CallOption) (*GetCoursesListResponse, error)
 	GetCourseCategories(ctx context.Context, in *GetCourseCategoriesRequest, opts ...grpc.CallOption) (*GetCourseCategoriesResponse, error)
+	EnrollToCourse(ctx context.Context, in *EnrollToCourseRequest, opts ...grpc.CallOption) (*EnrollToCourseResponse, error)
 	// Уроки
 	GetCourseLessons(ctx context.Context, in *GetCourseLessonsRequest, opts ...grpc.CallOption) (*GetCourseLessonsResponse, error)
 	GetLessonDetails(ctx context.Context, in *GetLessonDetailsRequest, opts ...grpc.CallOption) (*GetLessonDetailsResponse, error)
@@ -67,6 +69,16 @@ func (c *learningClient) GetCourseCategories(ctx context.Context, in *GetCourseC
 	return out, nil
 }
 
+func (c *learningClient) EnrollToCourse(ctx context.Context, in *EnrollToCourseRequest, opts ...grpc.CallOption) (*EnrollToCourseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnrollToCourseResponse)
+	err := c.cc.Invoke(ctx, Learning_EnrollToCourse_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *learningClient) GetCourseLessons(ctx context.Context, in *GetCourseLessonsRequest, opts ...grpc.CallOption) (*GetCourseLessonsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCourseLessonsResponse)
@@ -94,6 +106,7 @@ type LearningServer interface {
 	// Курсы
 	GetCoursesList(context.Context, *GetCoursesListRequest) (*GetCoursesListResponse, error)
 	GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error)
+	EnrollToCourse(context.Context, *EnrollToCourseRequest) (*EnrollToCourseResponse, error)
 	// Уроки
 	GetCourseLessons(context.Context, *GetCourseLessonsRequest) (*GetCourseLessonsResponse, error)
 	GetLessonDetails(context.Context, *GetLessonDetailsRequest) (*GetLessonDetailsResponse, error)
@@ -112,6 +125,9 @@ func (UnimplementedLearningServer) GetCoursesList(context.Context, *GetCoursesLi
 }
 func (UnimplementedLearningServer) GetCourseCategories(context.Context, *GetCourseCategoriesRequest) (*GetCourseCategoriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourseCategories not implemented")
+}
+func (UnimplementedLearningServer) EnrollToCourse(context.Context, *EnrollToCourseRequest) (*EnrollToCourseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnrollToCourse not implemented")
 }
 func (UnimplementedLearningServer) GetCourseLessons(context.Context, *GetCourseLessonsRequest) (*GetCourseLessonsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourseLessons not implemented")
@@ -176,6 +192,24 @@ func _Learning_GetCourseCategories_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Learning_EnrollToCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnrollToCourseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LearningServer).EnrollToCourse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Learning_EnrollToCourse_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LearningServer).EnrollToCourse(ctx, req.(*EnrollToCourseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Learning_GetCourseLessons_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCourseLessonsRequest)
 	if err := dec(in); err != nil {
@@ -226,6 +260,10 @@ var Learning_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCourseCategories",
 			Handler:    _Learning_GetCourseCategories_Handler,
+		},
+		{
+			MethodName: "EnrollToCourse",
+			Handler:    _Learning_EnrollToCourse_Handler,
 		},
 		{
 			MethodName: "GetCourseLessons",

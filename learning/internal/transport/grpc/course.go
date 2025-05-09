@@ -37,3 +37,15 @@ func (h *handler) GetCourseCategories(ctx context.Context, req *v1.GetCourseCate
 		Categories: out.Categories,
 	}, err
 }
+
+func (h *handler) EnrollToCourse(ctx context.Context, req *v1.EnrollToCourseRequest) (res *v1.EnrollToCourseResponse, err error) {
+	_, err = h.service.EnrollToCourse(ctx, dto.EnrollToCourseRequest{
+		UserID:   req.GetUserID(),
+		CourseID: req.GetCourseID(),
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}

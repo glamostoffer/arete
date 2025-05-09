@@ -28,6 +28,15 @@ const (
 	from 
 		public.course_category
 	`
+
+	queryEnrollUserToCourse = `
+	insert into public.user_course (
+		user_id,
+		course_id
+	) values (
+		$1, $2 
+	);
+	`
 )
 
 const (

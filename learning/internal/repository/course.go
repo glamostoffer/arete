@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/glamostoffer/arete/learning/internal/domain"
 	"github.com/lib/pq"
@@ -35,4 +36,27 @@ func (r *repository) GetCourseCategories(ctx context.Context) (categories []stri
 	}
 
 	return categories, nil
+}
+
+func (r *repository) EnrollUserToCourse(ctx context.Context, userID, courseID int64) error {
+	res, err := r.db.ExecContext(
+		ctx,
+		queryEnrollUserToCourse,
+		userID,
+		courseID,
+	)
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rows != 1 {
+		return errors.New("INVALID_AFFECTED_ROWS")
+	}
+
+	return nil
 }
