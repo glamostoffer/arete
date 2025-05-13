@@ -118,7 +118,7 @@ type GetUserCoursesRequest struct {
 	UserID int64 `json:"-"`
 }
 type GetUserCoursesResponse struct {
-	Courses []Course
+	Courses []Course `json:"items"`
 }
 
 func (r GetUserCoursesResponse) FromProto(in *v1.GetUserCoursesResponse) GetUserCoursesResponse {
