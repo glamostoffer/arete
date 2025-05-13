@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,6 +27,10 @@ func NewHTTP(
 	handler httpHandler,
 ) HTTPServer {
 	engine := gin.New()
+
+	if len(cfg.CORS.AllowOrigins) > 0 {
+		engine.Use(corsMiddleware(cfg.CORS))
+	}
 
 	engine.Use(
 		gin.Logger(),
@@ -75,6 +81,36 @@ func (s *HTTPServer) setupRoutes() {
 	s.handler.SetupRoutes(s.eng)
 
 	return
+}
+
+func corsMiddleware(config CORSConfig) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		origin := c.GetHeader("Origin")
+
+		allowed := false
+		for _, o := range config.AllowOrigins {
+			if o == "*" || o == origin {
+				allowed = true
+				break
+			}
+		}
+
+		if allowed {
+			c.Header("Access-Control-Allow-Origin", origin)
+			c.Header("Access-Control-Allow-Credentials", strconv.FormatBool(config.AllowCredentials))
+
+			if c.Request.Method == "OPTIONS" {
+				c.Header("Access-Control-Allow-Methods", strings.Join(config.AllowMethods, ","))
+				c.Header("Access-Control-Allow-Headers", strings.Join(config.AllowHeaders, ","))
+				c.Header("Access-Control-Expose-Headers", strings.Join(config.ExposeHeaders, ","))
+				c.Header("Access-Control-Max-Age", strconv.Itoa(int(config.MaxAge.Seconds())))
+				c.AbortWithStatus(http.StatusNoContent)
+				return
+			}
+		}
+
+		c.Next()
+	}
 }
 
 func (s *HTTPServer) Stop(ctx context.Context) error {
