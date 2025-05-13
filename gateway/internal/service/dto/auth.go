@@ -52,7 +52,7 @@ type VerifyCredentialsResponse struct {
 }
 
 type RefreshSessionRequest struct {
-	RefreshToken string
+	RefreshToken string `json:"refreshToken"`
 }
 type RefreshSessionResponse struct {
 	AccessToken string `json:"accessToken"`

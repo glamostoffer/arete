@@ -21,7 +21,7 @@ func (h *handler) SetupAuthRoutes(e *gin.Engine) {
 		{
 			signIn.POST("", h.SignIn)
 		}
-		session := api.Group("session")
+		session := api.Group("/session")
 		{
 			session.POST("/refresh", h.RefreshSession)
 		}
