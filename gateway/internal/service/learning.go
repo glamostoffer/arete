@@ -54,3 +54,26 @@ func (s *service) GetLessonDetails(ctx context.Context, req dto.GetLessonDetails
 
 	return res.FromProto(out), err
 }
+
+func (s *service) EnrollToCourse(ctx context.Context, req dto.EnrollToCourseRequest) (res dto.EnrollToCourseResponse, err error) {
+	_, err = s.learning.EnrollToCourse(ctx, &v1.EnrollToCourseRequest{
+		UserID:   req.UserID,
+		CourseID: req.CourseID,
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
+func (s *service) GetUserCourses(ctx context.Context, req dto.GetUserCoursesRequest) (res dto.GetUserCoursesResponse, err error) {
+	out, err := s.learning.GetUserCourses(ctx, &v1.GetUserCoursesRequest{
+		UserID: req.UserID,
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return res.FromProto(out), nil
+}

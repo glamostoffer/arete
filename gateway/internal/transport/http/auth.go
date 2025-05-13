@@ -46,7 +46,6 @@ func (h *handler) StartSignUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) ConfirmEmail(c *gin.Context) {
@@ -63,7 +62,6 @@ func (h *handler) ConfirmEmail(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) SignIn(c *gin.Context) {
@@ -80,7 +78,6 @@ func (h *handler) SignIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) VerifyCredentials(c *gin.Context) {
@@ -99,8 +96,6 @@ func (h *handler) VerifyCredentials(c *gin.Context) {
 	}
 
 	c.Set("userID", res.UserID) // todo make it const
-
-	return
 }
 
 func (h *handler) RefreshSession(c *gin.Context) {
@@ -117,7 +112,6 @@ func (h *handler) RefreshSession(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) GetUserInfo(c *gin.Context) {
@@ -136,5 +130,4 @@ func (h *handler) GetUserInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }

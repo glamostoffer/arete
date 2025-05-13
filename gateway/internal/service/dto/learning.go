@@ -106,3 +106,36 @@ func (r GetLessonDetailsResponse) FromProto(in *v1.GetLessonDetailsResponse) Get
 
 	return r
 }
+
+type EnrollToCourseRequest struct {
+	UserID   int64 `json:"-"`
+	CourseID int64 `json:"courseID"`
+}
+type EnrollToCourseResponse struct {
+}
+
+type GetUserCoursesRequest struct {
+	UserID int64 `json:"-"`
+}
+type GetUserCoursesResponse struct {
+	Courses []Course
+}
+
+func (r GetUserCoursesResponse) FromProto(in *v1.GetUserCoursesResponse) GetUserCoursesResponse {
+	r.Courses = make([]Course, 0, len(in.GetCourses()))
+
+	for _, pbCourse := range in.GetCourses() {
+		r.Courses = append(r.Courses, Course{
+			ID:          pbCourse.GetId(),
+			Title:       pbCourse.GetTitle(),
+			Description: pbCourse.GetCategory(),
+			Duration:    pbCourse.GetDuration(),
+			Difficulty:  pbCourse.GetDifficulty(),
+			Category:    pbCourse.GetCategory(),
+			ImageURL:    pbCourse.GetImageURL(),
+			IsEnrolled:  pbCourse.GetIsEnrolled(),
+		})
+	}
+
+	return r
+}

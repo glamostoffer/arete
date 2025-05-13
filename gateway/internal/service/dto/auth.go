@@ -1,7 +1,5 @@
 package dto
 
-import "time"
-
 type StartSignUpRequest struct {
 	Login                string `json:"login"`
 	Email                string `json:"email"`
@@ -38,10 +36,10 @@ type GetUserInfoRequest struct {
 	UserID int64 `json:"userID" uri:"id"`
 }
 type GetUserInfoResponse struct {
-	ID               int64     `json:"id,omitempty" db:"id"`
-	Login            string    `json:"login,omitempty" db:"login"`
-	Email            string    `json:"email,omitempty" db:"email"`
-	RegistrationDate time.Time `json:"registrationDate,omitempty" db:"registration_date"`
+	ID               int64  `json:"id,omitempty" db:"id"`
+	Login            string `json:"login,omitempty" db:"login"`
+	Email            string `json:"email,omitempty" db:"email"`
+	RegistrationDate int64  `json:"registrationDate,omitempty" db:"registration_date"`
 }
 
 type VerifyCredentialsRequest struct {

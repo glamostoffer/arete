@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	v1 "github.com/glamostoffer/arete/auth/pkg/api/grpc/v1"
 	"github.com/glamostoffer/arete/gateway/internal/service/dto"
@@ -96,6 +95,6 @@ func (s *service) GetUserInfo(ctx context.Context, req dto.GetUserInfoRequest) (
 		ID:               req.UserID,
 		Login:            out.GetLogin(),
 		Email:            out.GetEmail(),
-		RegistrationDate: time.Unix(out.GetRegistrationDate(), 0),
+		RegistrationDate: out.GetRegistrationDate(),
 	}, nil
 }
