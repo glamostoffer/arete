@@ -86,7 +86,7 @@ func (h *handler) SignIn(c *gin.Context) {
 func (h *handler) VerifyCredentials(c *gin.Context) {
 	accessToken := c.GetHeader("X-Access-Token")
 	if accessToken == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing X-Access-Token header"})
+		c.JSON(http.StatusTeapot, gin.H{"error": "missing X-Access-Token header"})
 		return
 	}
 
@@ -94,7 +94,7 @@ func (h *handler) VerifyCredentials(c *gin.Context) {
 		AccessToken: accessToken,
 	})
 	if err != nil {
-		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
+		c.JSON(http.StatusTeapot, gin.H{"error": err.Error()})
 		return
 	}
 

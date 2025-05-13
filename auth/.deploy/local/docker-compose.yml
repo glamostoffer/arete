@@ -25,6 +25,20 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
+  app:
+    container_name: auth_service_grpc
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    ports:
+      - "5151:5151"
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ../../config/config.json:/app/config/config.json
+
 volumes:
   redis_data:
   postgres_data:

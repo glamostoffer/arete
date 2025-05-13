@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/glamostoffer/arete/learning/cmp/server"
+	"github.com/glamostoffer/arete/learning/app/cmp/server"
 	"github.com/glamostoffer/arete/learning/config"
 	"github.com/glamostoffer/arete/learning/internal/repository"
 	"github.com/glamostoffer/arete/learning/internal/service"

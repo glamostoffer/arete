@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/glamostoffer/arete/learning/cmp/server"
+	"github.com/glamostoffer/arete/learning/app/cmp/server"
 	"github.com/glamostoffer/arete/pkg/psqlconn"
 	"github.com/go-playground/validator"
 )

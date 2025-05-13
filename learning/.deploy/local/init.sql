@@ -9,7 +9,7 @@ create table public.course (
     "description" text not null,
     duration text not null,
     difficulty text not null,
-    category_id int not null references public.course_category (id),
+    category_id bigint not null references public.course_category (id),
     image_url text not null
 );
 

@@ -30,3 +30,5 @@ go.work.sum
 !krakend.json
 
 .DS_Store
+
+playground

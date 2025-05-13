@@ -16,5 +16,18 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
+  app:
+    container_name: learning_service_grpc
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    ports:
+      - "5152:5152"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ../../config/config.json:/app/config/config.json
+
 volumes:
   postgres_data:

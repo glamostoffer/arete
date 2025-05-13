@@ -1,0 +1,14 @@
+# docker-compose -p gateway_service up --build
+version: '3.8'
+
+services:
+  app:
+    container_name: gateway_service_http
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
+    volumes:
+      - ../../config/config.json:/app/config/config.json
