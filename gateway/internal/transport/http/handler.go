@@ -17,6 +17,4 @@ func New(auth auth, learning learning) *handler {
 func (h *handler) SetupRoutes(e *gin.Engine) {
 	h.SetupAuthRoutes(e)
 	h.SetupLearningRoutes(e)
-
-	return
 }

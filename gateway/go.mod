@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/glamostoffer/arete/auth/pkg v0.0.0-20250416010835-412e56790a1a
-	github.com/glamostoffer/arete/learning/pkg v0.0.0-20250503153018-4068042d9910
+	github.com/glamostoffer/arete/learning/pkg v0.0.0-20250513193333-cf89cf8e7c01
 	github.com/glamostoffer/arete/pkg v0.0.0-20250416010835-412e56790a1a
 	github.com/go-playground/validator v9.31.0+incompatible
 )

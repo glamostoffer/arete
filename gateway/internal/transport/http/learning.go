@@ -15,6 +15,8 @@ func (h *handler) SetupLearningRoutes(e *gin.Engine) {
 		{
 			course.GET("/categories", h.VerifyCredentials, h.GetCourseCategories)
 			course.POST("", h.VerifyCredentials, h.GetCourses)
+			course.POST("/enroll", h.VerifyCredentials, h.EnrollToCourse)
+			course.GET("/user-courses", h.VerifyCredentials, h.GetUserCourses)
 		}
 		lesson := api.Group("/lesson")
 		{
@@ -38,7 +40,6 @@ func (h *handler) GetCourseCategories(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) GetCourses(c *gin.Context) {
@@ -62,7 +63,6 @@ func (h *handler) GetCourses(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) GetCourseLessons(c *gin.Context) {
@@ -85,7 +85,6 @@ func (h *handler) GetCourseLessons(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
 }
 
 func (h *handler) GetLessonDetails(c *gin.Context) {
@@ -108,5 +107,46 @@ func (h *handler) GetLessonDetails(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
-	return
+}
+
+func (h *handler) EnrollToCourse(c *gin.Context) {
+	_, exists := c.Get("userID") // todo make it const
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing userID"})
+		return
+	}
+
+	var req dto.EnrollToCourseRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	res, err := h.learning.EnrollToCourse(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
+func (h *handler) GetUserCourses(c *gin.Context) {
+	userID, exists := c.Get("userID") // todo make it const
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "missing userID"})
+		return
+	}
+
+	req := dto.GetUserCoursesRequest{
+		UserID: userID.(int64),
+	}
+
+	res, err := h.learning.GetUserCourses(c.Request.Context(), req)
+	if err != nil {
+		c.JSON(errlist.GetErrStatus(err), gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }

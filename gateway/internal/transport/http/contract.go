@@ -22,4 +22,6 @@ type learning interface {
 	GetCourses(ctx context.Context, req dto.GetCoursesRequest) (res dto.GetCoursesResponse, err error)
 	GetCourseLessons(ctx context.Context, req dto.GetCourseLessonsRequest) (res dto.GetCourseLessonsResponse, err error)
 	GetLessonDetails(ctx context.Context, req dto.GetLessonDetailsRequest) (res dto.GetLessonDetailsResponse, err error)
+	EnrollToCourse(ctx context.Context, req dto.EnrollToCourseRequest) (res dto.EnrollToCourseResponse, err error)
+	GetUserCourses(ctx context.Context, req dto.GetUserCoursesRequest) (res dto.GetUserCoursesResponse, err error)
 }
