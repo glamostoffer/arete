@@ -1,0 +1,81 @@
+// protoc --go_out=./pkg --go_opt=paths=source_relative --go-grpc_out=./pkg --go-grpc_opt=paths=source_relative ./api/grpc/v1/practice.proto
+syntax = "proto3";
+
+package practice.v1;
+
+option go_package = "api/practice/v1;v1";
+
+service Practice {
+    rpc GetCourseQuizzes(GetCourseQuizzesRequest) returns (GetCourseQuizzesResponse);
+    rpc StartQuizz(StartQuizzRequest) returns (StartQuizzResponse);
+    rpc GetQuizzQuestion(GetQuizzQuestionRequest) returns (GetQuizzQuestionResponse);
+    rpc SubmitQuizzQuestion(SubmitQuizzQuestionRequest) returns (SubmitQuizzQuestionResponse);
+    rpc SubmitQuizz(SubmitQuizzRequest) returns (SubmitQuizzResponse);
+}
+
+message Quizz {
+    int64 id = 1;
+    int64 courseID = 2;
+    string title = 3;
+    string description = 4;
+    bool isFinished = 5;
+    bool isLocked = 6;
+}
+
+message Question {
+    int64 id = 1;
+    int64 quizzID = 2;
+    string text = 3;
+    repeated QuestionOption options = 4;
+}
+
+message QuestionOption {
+    int64 id = 1;
+    string text = 2;
+}
+
+message GetCourseQuizzesRequest {
+    int64 courseID = 1;
+    int64 userID = 2;
+    int64 limit = 3;
+    int64 offset = 4;
+}
+message GetCourseQuizzesResponse {
+    repeated Quizz quizzes = 1;
+}
+
+message StartQuizzRequest {
+    int64 userID = 1;
+    int64 quizzID = 2;
+    int64 courseID = 3;
+}
+message StartQuizzResponse {
+    string sessionID = 1;
+    int64 totalQuestions = 2;
+    Question firstQuestion = 3;
+}
+
+message GetQuizzQuestionRequest {
+    string sessionID = 1;
+}
+message GetQuizzQuestionResponse {
+    Question question = 1;
+}
+
+message SubmitQuizzQuestionRequest {
+    int64 questionID = 1;
+    int64 optionID = 2;
+    string sessionID = 3;
+}
+message SubmitQuizzQuestionResponse {
+    bool isCorrect = 1;
+    string explanation = 2;
+}
+
+message SubmitQuizzRequest {
+    string sessionID = 1;
+}
+message SubmitQuizzResponse {
+    int64 rightAnswers = 1;
+    bool isFinished = 2;
+}

@@ -21,8 +21,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Analytics_GetUserRating_FullMethodName   = "/analytics.v1.analytics/GetUserRating"
-	Analytics_GetUserProgress_FullMethodName = "/analytics.v1.analytics/GetUserProgress"
+	Analytics_GetUserRating_FullMethodName           = "/analytics.v1.analytics/GetUserRating"
+	Analytics_GetUserRatingInCourse_FullMethodName   = "/analytics.v1.analytics/GetUserRatingInCourse"
+	Analytics_GetUserProgressInCourse_FullMethodName = "/analytics.v1.analytics/GetUserProgressInCourse"
 )
 
 // AnalyticsClient is the client API for Analytics service.
@@ -30,7 +31,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AnalyticsClient interface {
 	GetUserRating(ctx context.Context, in *GetUserRatingRequest, opts ...grpc.CallOption) (*GetUserRatingResponse, error)
-	GetUserProgress(ctx context.Context, in *GetUserProgressRequest, opts ...grpc.CallOption) (*GetUserProgressResponse, error)
+	GetUserRatingInCourse(ctx context.Context, in *GetUserRatingInCourseRequest, opts ...grpc.CallOption) (*GetUserRatingInCourseResponse, error)
+	GetUserProgressInCourse(ctx context.Context, in *GetUserProgressInCourseRequest, opts ...grpc.CallOption) (*GetUserProgressInCourseResponse, error)
 }
 
 type analyticsClient struct {
@@ -51,10 +53,20 @@ func (c *analyticsClient) GetUserRating(ctx context.Context, in *GetUserRatingRe
 	return out, nil
 }
 
-func (c *analyticsClient) GetUserProgress(ctx context.Context, in *GetUserProgressRequest, opts ...grpc.CallOption) (*GetUserProgressResponse, error) {
+func (c *analyticsClient) GetUserRatingInCourse(ctx context.Context, in *GetUserRatingInCourseRequest, opts ...grpc.CallOption) (*GetUserRatingInCourseResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUserProgressResponse)
-	err := c.cc.Invoke(ctx, Analytics_GetUserProgress_FullMethodName, in, out, cOpts...)
+	out := new(GetUserRatingInCourseResponse)
+	err := c.cc.Invoke(ctx, Analytics_GetUserRatingInCourse_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *analyticsClient) GetUserProgressInCourse(ctx context.Context, in *GetUserProgressInCourseRequest, opts ...grpc.CallOption) (*GetUserProgressInCourseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserProgressInCourseResponse)
+	err := c.cc.Invoke(ctx, Analytics_GetUserProgressInCourse_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +78,8 @@ func (c *analyticsClient) GetUserProgress(ctx context.Context, in *GetUserProgre
 // for forward compatibility.
 type AnalyticsServer interface {
 	GetUserRating(context.Context, *GetUserRatingRequest) (*GetUserRatingResponse, error)
-	GetUserProgress(context.Context, *GetUserProgressRequest) (*GetUserProgressResponse, error)
+	GetUserRatingInCourse(context.Context, *GetUserRatingInCourseRequest) (*GetUserRatingInCourseResponse, error)
+	GetUserProgressInCourse(context.Context, *GetUserProgressInCourseRequest) (*GetUserProgressInCourseResponse, error)
 	mustEmbedUnimplementedAnalyticsServer()
 }
 
@@ -80,8 +93,11 @@ type UnimplementedAnalyticsServer struct{}
 func (UnimplementedAnalyticsServer) GetUserRating(context.Context, *GetUserRatingRequest) (*GetUserRatingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserRating not implemented")
 }
-func (UnimplementedAnalyticsServer) GetUserProgress(context.Context, *GetUserProgressRequest) (*GetUserProgressResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserProgress not implemented")
+func (UnimplementedAnalyticsServer) GetUserRatingInCourse(context.Context, *GetUserRatingInCourseRequest) (*GetUserRatingInCourseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserRatingInCourse not implemented")
+}
+func (UnimplementedAnalyticsServer) GetUserProgressInCourse(context.Context, *GetUserProgressInCourseRequest) (*GetUserProgressInCourseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserProgressInCourse not implemented")
 }
 func (UnimplementedAnalyticsServer) mustEmbedUnimplementedAnalyticsServer() {}
 func (UnimplementedAnalyticsServer) testEmbeddedByValue()                   {}
@@ -122,20 +138,38 @@ func _Analytics_GetUserRating_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Analytics_GetUserProgress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserProgressRequest)
+func _Analytics_GetUserRatingInCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRatingInCourseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AnalyticsServer).GetUserProgress(ctx, in)
+		return srv.(AnalyticsServer).GetUserRatingInCourse(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Analytics_GetUserProgress_FullMethodName,
+		FullMethod: Analytics_GetUserRatingInCourse_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AnalyticsServer).GetUserProgress(ctx, req.(*GetUserProgressRequest))
+		return srv.(AnalyticsServer).GetUserRatingInCourse(ctx, req.(*GetUserRatingInCourseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Analytics_GetUserProgressInCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserProgressInCourseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnalyticsServer).GetUserProgressInCourse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Analytics_GetUserProgressInCourse_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnalyticsServer).GetUserProgressInCourse(ctx, req.(*GetUserProgressInCourseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -152,8 +186,12 @@ var Analytics_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Analytics_GetUserRating_Handler,
 		},
 		{
-			MethodName: "GetUserProgress",
-			Handler:    _Analytics_GetUserProgress_Handler,
+			MethodName: "GetUserRatingInCourse",
+			Handler:    _Analytics_GetUserRatingInCourse_Handler,
+		},
+		{
+			MethodName: "GetUserProgressInCourse",
+			Handler:    _Analytics_GetUserProgressInCourse_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
