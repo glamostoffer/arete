@@ -4,48 +4,71 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/IBM/sarama"
-	"github.com/gofrs/uuid"
-	"github.com/shopspring/decimal"
+	"github.com/segmentio/kafka-go"
 )
-
-type EventType string
 
 const (
-	QuizComplete = EventType("quiz_complete")
-	TaskComplete = EventType("task_complete")
+	QuizComplete = "quiz_complete"
+	TaskComplete = "task_complete"
 )
 
-type Rating struct {
-	ID          uuid.UUID `json:"id" db:"id"`
-	UserID      int64     `json:"userID" db:"user_id"`
-	CourseID    uuid.UUID `json:"courseID" db:"course_id"`
-	Score       int64     `json:"score" db:"score"`
-	LastUpdated time.Time `json:"lastUpdated" db:"last_updated"`
+type TaskEventData struct {
+	// todo
 }
 
-type Progress struct {
-	ID                      uuid.UUID       `json:"id" db:"id"`
-	UserID                  int64           `json:"userID" db:"user_id"`
-	CourseID                uuid.UUID       `json:"courseID" db:"course_id"`
-	TotalMaterialsCompleted int64           `json:"totalMaterialsCompleted" db:"total_matetials_completed"`
-	TotalTasksCompleted     int64           `json:"totalTasksCompleted" db:"total_tasks_completed"`
-	TotalQuizzesCompleted   int64           `json:"totalQuizzesCompletes" db:"total_quizzes_completed"`
-	TotalScore              int64           `json:"totalScore" db:"total_score"`
-	CompletionRate          decimal.Decimal `json:"completionRate" db:"completion_rate"`
-	LastUpdated             time.Time       `json:"lastUpdated" db:"last_updated"`
+type QuizzEventData struct {
+	UserID int64
+	// todo
 }
 
+type UserStats struct {
+	UserCourseProgress
+	CourseRating
+	GlobalRating
+}
+
+type UserCourseProgress struct {
+	UserID               int64
+	CourseID             int64
+	CompletionPercentage float64
+	LastUpdated          time.Time
+	CompletedLessons     int64
+	CompletedQuizzes     int64
+	CompletedTasks       int64
+}
+
+type CourseRating struct {
+	UserID      int64
+	CourseID    int64
+	Rating      float64
+	Position    int64
+	LastUpdated time.Time
+}
+
+type GlobalRating struct {
+	UserID      int64
+	Rating      float64
+	Position    int64
+	LastUpdated time.Time
+}
 type Event struct {
-	ID          uuid.UUID       `json:"id" db:"id"`
-	UserID      int64           `json:"userID" db:"user_id"`
-	CourseID    uuid.UUID       `json:"courseID" db:"course_id"`
-	Type        EventType       `json:"type" db:"type"`
-	Data        json.RawMessage `json:"data" db:"data"`
-	CreatedAt   time.Time       `json:"createdAt" db:"created_at"`
-	ProcessedAt *time.Time      `json:"-" db:"processed_at"`
+	ID             int64
+	Key            string
+	Topic          string
+	Payload        json.RawMessage
+	IdempotencyKey string
+	CreatedAt      time.Time
+	LockedUntil    *time.Time
+	Attempts       int64
+	Error          *string
+	ProcessedAt    *time.Time
 }
 
-func (e *Event) ParseKafkaMessage(*sarama.ConsumerMessage) error {
-	return nil
+func EventFromMessage(msg kafka.Message) Event {
+	return Event{
+		Key:       string(msg.Key),
+		Topic:     msg.Topic,
+		Payload:   msg.Value,
+		CreatedAt: time.Now(),
+	}
 }

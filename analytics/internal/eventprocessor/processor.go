@@ -2,44 +2,42 @@ package eventprocessor
 
 import (
 	"context"
-	"sync"
+	"errors"
 
-	"github.com/IBM/sarama"
 	"github.com/glamostoffer/arete/analytics/internal/domain"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/segmentio/kafka-go"
 )
 
 type processor struct {
 	cfg      Config
-	consumer sarama.PartitionConsumer
+	consumer consumer
 	repo     repository
-	doneCh   chan (struct{})
 }
 
-func New(cfg Config, consumer sarama.PartitionConsumer, repo repository) *processor {
-	doneCh := make(chan struct{}, 1)
-
+func New(cfg Config, consumer consumer, repo repository) *processor {
 	return &processor{
 		cfg:      cfg,
 		consumer: consumer,
 		repo:     repo,
-		doneCh:   doneCh,
 	}
 }
 
 func (p *processor) Start(ctx context.Context) error {
 	go func() {
 		for {
-			select {
-			case err := <-p.consumer.Errors():
-				log.Error(err)
-			case msg := <-p.consumer.Messages():
-				err := p.SaveEvent(ctx, msg)
-				if err != nil {
-					log.Error(err)
+			msg, err := p.consumer.ReadMessage(ctx)
+			if err != nil {
+				if errors.Is(err, context.Canceled) {
+					return
 				}
-			case <-p.doneCh:
-				return
+
+				log.Error("error reading message", err)
+				continue
+			}
+
+			if err := p.SaveEvent(ctx, msg); err != nil {
+				log.Error("error saving event", err)
 			}
 		}
 	}()
@@ -47,62 +45,13 @@ func (p *processor) Start(ctx context.Context) error {
 	return nil
 }
 
-func (p *processor) Stop(ctx context.Context) error {
-	p.doneCh <- struct{}{}
-	err := p.consumer.Close()
-	return err
+func (p *processor) SaveEvent(ctx context.Context, msg kafka.Message) error {
+	event := domain.EventFromMessage(msg)
+
+	return p.repo.SaveEvent(ctx, event)
 }
 
-func (p *processor) SaveEvent(ctx context.Context, msg *sarama.ConsumerMessage) error {
-	event := domain.Event{}
-	err := event.ParseKafkaMessage(msg)
-	if err != nil {
-		return err
-	}
-
-	err = p.repo.InsertEvent(ctx, event)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (p *processor) ProcessEvent(ctx context.Context) error {
-	events, err := p.repo.SelectUnprocessedEvents(ctx, p.cfg.WorkersCount)
-	if err != nil {
-		return err
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(len(events))
-
-	for _, event := range events {
-		go func(event domain.Event) {
-			defer wg.Done()
-			var err error
-
-			switch event.Type {
-			case domain.QuizComplete:
-				err = p.handleQuizEvent(event.Data, event.UserID, event.CourseID)
-			case domain.TaskComplete:
-				err = p.handleTaskEvent(event.Data, event.UserID, event.CourseID)
-			}
-
-			if err != nil {
-				log.Error(err)
-				return
-			}
-
-			err = p.repo.MarkProcessedEvent(ctx, event)
-			if err != nil {
-				log.Error(err)
-				return
-			}
-		}(event)
-	}
-
-	wg.Wait()
+func (p *processor) Stop(_ context.Context) error {
 
 	return nil
 }

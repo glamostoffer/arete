@@ -7,12 +7,5 @@ import (
 )
 
 type service interface {
-	GetRating(
-		ctx context.Context,
-		req dto.GetRatingRequest,
-	) (res dto.GetRatingResponse, err error)
-	GetProgress(
-		ctx context.Context,
-		req dto.GetProgressRequest,
-	) (res dto.GetProgressResponse, err error)
+	GetUserStats(ctx context.Context, req dto.GetUserStatsRequest) (res dto.GetUserStatsResponse, err error)
 }

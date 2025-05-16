@@ -5,7 +5,6 @@ import (
 
 	"github.com/glamostoffer/arete/analytics/internal/service/dto"
 	v1 "github.com/glamostoffer/arete/analytics/pkg/api/grpc/v1"
-	"github.com/gofrs/uuid"
 )
 
 type handler struct {
@@ -20,41 +19,15 @@ func New(service service) *handler {
 	}
 }
 
-func (h *handler) GetUserRating(
+func (h *handler) GetUserStats(
 	ctx context.Context,
-	req *v1.GetUserRatingRequest,
-) (res *v1.GetUserRatingResponse, err error) {
-	courseID, err := uuid.FromString(req.GetCourseID())
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := h.service.GetRating(ctx, dto.GetRatingRequest{
-		UserID:   req.GetUserID(),
-		CourseID: courseID,
+	req *v1.GetUserStatsRequest,
+) (res *v1.GetUserStatsResponse, err error) {
+	out, err := h.service.GetUserStats(ctx, dto.GetUserStatsRequest{
+		UserID: req.GetUserID(),
 	})
 	if err != nil {
-		return nil, err
-	}
-
-	return out.ToProto(), nil
-}
-
-func (h *handler) GetUserProgress(
-	ctx context.Context,
-	req *v1.GetUserProgressRequest,
-) (res *v1.GetUserProgressResponse, err error) {
-	courseID, err := uuid.FromString(req.GetCourseID())
-	if err != nil {
-		return nil, err
-	}
-
-	out, err := h.service.GetProgress(ctx, dto.GetProgressRequest{
-		UserID:   req.GetUserID(),
-		CourseID: courseID,
-	})
-	if err != nil {
-		return nil, err
+		return res, nil
 	}
 
 	return out.ToProto(), nil

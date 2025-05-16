@@ -6,42 +6,39 @@ package analytics.v1;
 option go_package = "api/analytics/v1;v1";
 
 service analytics {
-    rpc GetUserRating(GetUserRatingRequest) returns (GetUserRatingResponse); 
-    rpc GetUserRatingInCourse(GetUserRatingInCourseRequest) returns (GetUserRatingInCourseResponse);
-    rpc GetUserProgressInCourse(GetUserProgressInCourseRequest) returns (GetUserProgressInCourseResponse);
+    rpc GetUserStats(GetUserStatsRequest) returns (GetUserStatsResponse); 
 }
 
-message GetUserRatingRequest {
-    int64 userID = 1;
-}
-message GetUserRatingResponse {
-    string ratingID = 1;
-    int64 score = 2;
-    int64 position = 3;
-    int64 lastUpdated = 4; // timestamp in unix
-}
-
-message GetUserRatingInCourseRequest {
-    int64 userID = 1;
-    string courseID = 2;
-}
-message GetUserRatingInCourseResponse {
-    string ratingID = 1;
-    int64 score = 2;
-    int64 position = 3;
-    int64 lastUpdated = 4; // timestamp in unix
+message UserCourseProgress {
+  int64 userID = 1;
+  int64 courseID = 2;
+  double completionPercentage = 3;
+  int64 lastUpdated = 4;
+  int64 completedLessons = 5;
+  int64 completedQuizzes = 6;
+  int64 completedTasks = 7;
 }
 
-message GetUserProgressInCourseRequest {
-    int64 userID = 1;
-    string courseID = 2;
+message CourseRating {
+  int64 userID = 1;
+  int64 courseID = 2;
+  double rating = 3;
+  int64 position = 4;
+  int64 lastUpdated = 5;
 }
-message GetUserProgressInCourseResponse {
-    string progressID = 1;
-    int64 materialsCompleted = 2;
-    int64 totalTasksCompleted = 3;
-    int64 totalQuizzesCompleted = 4;
-    int64 totalScore = 5;
-    string completionRate = 6; // numeric/decimal type in string
-    int64 lastUpdated = 7; // timestamp in unix
+
+message GlobalRating {
+  int64 userID = 1;
+  double rating = 2;
+  int64 position = 3;
+  int64 lastUpdated = 4;
+}
+
+message GetUserStatsRequest {
+    int64 userID = 1;
+}
+message GetUserStatsResponse {
+    UserCourseProgress progress = 1;
+    CourseRating courseRating = 2;
+    GlobalRating rating = 3;
 }

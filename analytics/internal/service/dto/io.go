@@ -3,29 +3,43 @@ package dto
 import (
 	"github.com/glamostoffer/arete/analytics/internal/domain"
 	v1 "github.com/glamostoffer/arete/analytics/pkg/api/grpc/v1"
-	"github.com/gofrs/uuid"
 )
 
-type GetRatingRequest struct {
-	UserID   int64
-	CourseID uuid.UUID
-}
-type GetRatingResponse struct {
-	Rating domain.Rating
+type GetUserStatsRequest struct {
+	UserID int64
 }
 
-func (r *GetRatingResponse) ToProto() *v1.GetUserRatingResponse {
-	return &v1.GetUserRatingResponse{}
+type GetUserStatsResponse struct {
+	domain.UserStats
 }
 
-type GetProgressRequest struct {
-	UserID   int64
-	CourseID uuid.UUID
-}
-type GetProgressResponse struct {
-	Progress domain.Progress
-}
+func (r *GetUserStatsResponse) ToProto() *v1.GetUserStatsResponse {
+	pbStats := &v1.GetUserStatsResponse{}
 
-func (r *GetProgressResponse) ToProto() *v1.GetUserProgressResponse {
-	return &v1.GetUserProgressResponse{}
+	pbStats.CourseRating = &v1.CourseRating{
+		UserID:      r.CourseRating.UserID,
+		CourseID:    r.CourseRating.CourseID,
+		Rating:      r.CourseRating.Rating,
+		Position:    r.CourseRating.Position,
+		LastUpdated: r.CourseRating.LastUpdated.Unix(),
+	}
+
+	pbStats.Progress = &v1.UserCourseProgress{
+		UserID:               r.UserCourseProgress.UserID,
+		CourseID:             r.UserCourseProgress.CourseID,
+		CompletionPercentage: r.UserCourseProgress.CompletionPercentage,
+		LastUpdated:          r.UserCourseProgress.LastUpdated.Unix(),
+		CompletedLessons:     r.UserCourseProgress.CompletedLessons,
+		CompletedQuizzes:     r.UserCourseProgress.CompletedQuizzes,
+		CompletedTasks:       r.UserCourseProgress.CompletedTasks,
+	}
+
+	pbStats.Rating = &v1.GlobalRating{
+		UserID:      r.GlobalRating.UserID,
+		Rating:      r.GlobalRating.Rating,
+		Position:    r.GlobalRating.Position,
+		LastUpdated: r.GlobalRating.LastUpdated.Unix(),
+	}
+
+	return pbStats
 }
