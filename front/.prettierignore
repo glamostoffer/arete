@@ -1,0 +1,10 @@
+.next
+next-env.d.ts
+node_modules
+package-lock.json
+public
+.husky
+.deploy
+scripts
+pnpm-lock.yaml
+dist
