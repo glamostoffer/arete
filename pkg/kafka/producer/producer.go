@@ -49,7 +49,6 @@ func (p *Producer) WriteMessage(ctx context.Context, key, value string) error {
 	return p.WriteMessages(
 		ctx,
 		kafka.Message{
-			Topic: p.cfg.Topic,
 			Key:   []byte(key),
 			Value: []byte(value),
 		},
