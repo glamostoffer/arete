@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"log"
 
 	"github.com/glamostoffer/arete/practice/internal/domain"
 	"github.com/glamostoffer/arete/practice/internal/service/dto"
@@ -45,9 +46,9 @@ func (s *service) StartQuizz(
 	err = s.cache.SetQuizzSession(
 		ctx,
 		domain.QuizzFinishedEvent{
-			UserID:   0,
-			QuizzID:  0,
-			CourseID: 0,
+			UserID:   req.UserID,
+			QuizzID:  req.QuizzID,
+			CourseID: req.CourseID,
 		},
 		sessionID,
 		questsWithOpts,
@@ -124,7 +125,7 @@ func (s *service) SubmitQuizz(
 	res.RightAnswersCount = result.RightAnswersCount
 	if result.RightAnswersCount >= quizz.PassingScore {
 		res.IsFinished = true
-		err = s.repo.MarkQuizzCompleted(ctx, info.QuizzID, info.UserID)
+		err = s.repo.MarkQuizzCompleted(ctx, info.UserID, info.QuizzID)
 		if err != nil {
 			return res, err
 		}
@@ -134,7 +135,12 @@ func (s *service) SubmitQuizz(
 			return res, err
 		}
 
-		s.producer.WriteMessage(ctx, "quizz-finished", string(data))
+		go func() {
+			err = s.producer.WriteMessage(context.Background(), "quizz-finished", string(data))
+			if err != nil {
+				log.Printf("SubmitQuizz.producer.WriteMessage error:", err)
+			}
+		}()
 	}
 
 	return res, nil

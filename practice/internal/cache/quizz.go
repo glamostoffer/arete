@@ -9,8 +9,6 @@ import (
 
 	"github.com/glamostoffer/arete/practice/internal/domain"
 	"github.com/gofrs/uuid"
-	"github.com/tidwall/gjson"
-	"github.com/tidwall/sjson"
 )
 
 func (c *cache) getQuizzSessionKey(sessionID uuid.UUID) string {
@@ -153,13 +151,19 @@ func (c *cache) AddRightAnswerToQuizzSessionResult(
 		return err
 	}
 
-	cnt := gjson.GetBytes([]byte(res), "result.RightAnswersCount").Int()                 // todo make key const
-	updatedResult, err := sjson.SetBytes([]byte(res), "result.RightAnswersCount", cnt+1) // todo make key const
+	cnt := domain.QuizzSessionResult{}
+	err = json.Unmarshal([]byte(res), &cnt)
 	if err != nil {
 		return err
 	}
 
-	err = c.cl.HSet(ctx, c.getQuizzSessionKey(sessionID), "result", string(updatedResult)).Err() // todo make key const
+	cnt.RightAnswersCount++
+	data, err := json.Marshal(cnt)
+	if err != nil {
+		return err
+	}
+
+	err = c.cl.HSet(ctx, c.getQuizzSessionKey(sessionID), "result", data).Err() // todo make key const
 	if err != nil {
 		return err
 	}

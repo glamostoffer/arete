@@ -22,16 +22,16 @@ import (
 func Run(ctx context.Context, cfg *config.Config) error {
 	psql := psqlconn.New(cfg.Postgres)
 	rd := redis.New(cfg.Redis)
-	prod := producer.New(cfg.Producer)
+	pr := producer.New(cfg.Producer)
 
 	repo := repository.New(psql.DB)
 	ch := cache.New(rd.Client)
-	// todo producer
 
 	srv := service.New(
 		cfg.Service,
 		repo,
 		ch,
+		&pr,
 	)
 
 	grpcHandler := grpchandler.New(srv)
@@ -44,7 +44,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	cmps := []component.Component{
 		&psql,
 		&rd,
-		&prod,
+		&pr,
 		&grpcServ,
 	}
 

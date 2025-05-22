@@ -8,7 +8,7 @@ const (
 		q.title,
 		q."description",
 		q.passing_score,
-		q.sequence_number
+		q.sequence_number,
 		case 
 			when q.sequence_number = 1 then false
 			when exists (
@@ -20,7 +20,13 @@ const (
 				and prev_ucq.user_id = $2
 			) then false
 			else true
-    	end AS is_locked
+    	end AS is_locked,
+		exists (
+			select 1 
+			from public.user_completed_quizz ucq
+			where ucq.quizz_id = q.id
+			and ucq.user_id = $2
+		) as is_finished
 	from
 		public.quizz q
 	where 
@@ -36,7 +42,7 @@ const (
 		q.title,
 		q."description",
 		q.passing_score,
-		q.sequence_number
+		q.sequence_number,
 		case 
 			when q.sequence_number = 1 then false
 			when exists (
@@ -48,7 +54,13 @@ const (
 				and prev_ucq.user_id = $2
 			) then false
 			else true
-    	end AS is_locked
+    	end AS is_locked,
+		exists (
+			select 1 
+			from public.user_completed_quizz ucq
+			where ucq.quizz_id = q.id
+			and ucq.user_id = $2
+		) as is_finished
 	from
 		public.quizz q
 	where 
@@ -85,7 +97,8 @@ const (
 	from
 		public.question_option
 	where
-		question_id = any($1);
+		question_id = any($1)
+	order by random();
 	`
 	queryMarkQuizzCompleted = `
 	insert into public.user_completed_quizz(
