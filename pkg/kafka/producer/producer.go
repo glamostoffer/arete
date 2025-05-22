@@ -44,3 +44,14 @@ func (p *Producer) Stop(ctx context.Context) error {
 func (p *Producer) GetName() string {
 	return componentName
 }
+
+func (p *Producer) WriteMessage(ctx context.Context, key, value string) error {
+	return p.WriteMessages(
+		ctx,
+		kafka.Message{
+			Topic: p.cfg.Topic,
+			Key:   []byte(key),
+			Value: []byte(value),
+		},
+	)
+}
